@@ -24,4 +24,7 @@ class Tablero:
     
     def definir_direccion(self, color: str) -> int:
         return -1 if color == ficha1 else +1 
+    
+    def lugar_destino(self, color: str, origen: int, dado: int) -> int:
+        return origen + self.definir_direccion(color) * dado
         
