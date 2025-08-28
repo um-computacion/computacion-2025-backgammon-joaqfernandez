@@ -28,3 +28,11 @@ class Tablero:
     def lugar_destino(self, color: str, origen: int, dado: int) -> int:
         return origen + self.definir_direccion(color) * dado
         
+    def movimiento_regular(self, color: str, numero_destino: int) -> bool:
+        if not (0 <= numero_destino < 24):
+            return False
+        punto = self.__puntos__[numero_destino]
+        if punto["cantidad"] == 0:
+            return True
+        return punto["color"] == color
+        
