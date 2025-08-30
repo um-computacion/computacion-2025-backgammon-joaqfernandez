@@ -35,4 +35,12 @@ class Tablero:
         if punto["cantidad"] == 0:
             return True
         return punto["color"] == color
-        
+    
+    def hay_ficha_o_no(self, color: str, origen: int, dado: int)->bool:
+        if not (0 < origen <= 24):
+            False
+        punto_de_origen = self.__puntos__[origen]
+        if punto_de_origen["color"] != color or punto_de_origen["cantidad"] == 0:
+            return False
+        destino = self.lugar_destino(color, origen, dado)
+        return self.movimiento_regular(color, destino)
