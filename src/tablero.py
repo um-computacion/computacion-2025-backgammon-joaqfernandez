@@ -44,3 +44,18 @@ class Tablero:
             return False
         destino = self.lugar_destino(color, origen, dado)
         return self.movimiento_regular(color, destino)
+    
+    def aplicar_hay_ficha(self, color: str, origen: int, dado: int):
+        if not self.hay_ficha_o_no(color, origen, dado):
+            raise ValueError("Movimiento invalido")
+        destino = self.lugar_destino(color, origen, dado)
+
+        self.__puntos__[origen]["cantidad"] -= 1
+        if self.__puntos__[origen]["cantidad"] == 0:
+            self.__puntos__[origen]["color"] = None
+
+        if self.__puntos__[destino]["cantidad"] == 0:
+            self.__puntos__[destino]["color"] = color
+            self.__puntos__[destino]["cantidad"] = 1
+        else:
+            self.__puntos__[destino]["cantidad"] += 1
