@@ -13,6 +13,12 @@ class testTablero(unittest.TestCase):
         self.assertEqual(tablero.__puntos__[22]["color"], ficha1)
 
 
+    def test_negro_no_puede_mover_a_casilla_bloqueada_por_blanco(self):
+        tablero = Tablero()
+        tablero.__puntos__[6] = {"color": ficha1, "cantidad": 3}
+        self.assertFalse(tablero.hay_ficha_o_no(ficha2, 0, 6))
+
+
 
 if __name__ == "__main__":
     unittest.main()
