@@ -1,3 +1,4 @@
+from src.tablero import Tablero
 ficha1 = "BLANCO"
 ficha2 = "NEGRO"
 
@@ -15,3 +16,6 @@ class Jugador:
     @property
     def color(self) -> str:
         return self.__color__
+    
+    def direccion(self, tablero) -> int:
+        return tablero.definir_direccion(self.__color__)
