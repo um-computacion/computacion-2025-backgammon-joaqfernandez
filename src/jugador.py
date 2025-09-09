@@ -1,4 +1,5 @@
 from src.tablero import Tablero
+
 ficha1 = "BLANCO"
 ficha2 = "NEGRO"
 
