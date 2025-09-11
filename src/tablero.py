@@ -59,3 +59,8 @@ class Tablero:
             self.__puntos__[destino]["cantidad"] = 1
         else:
             self.__puntos__[destino]["cantidad"] += 1
+
+    def iter_puntos(self):
+        for i, p in enumerate(self.__puntos__):
+            yield i, p["color"], p["cantidad"]
+        
