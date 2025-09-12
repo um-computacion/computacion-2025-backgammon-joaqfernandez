@@ -64,3 +64,11 @@ class Tablero:
         for i, p in enumerate(self.__puntos__):
             yield i, p["color"], p["cantidad"]
         
+    def obtener_puntos(self):
+        return self.__puntos__
+
+    def fichas_en_barra(self, color: str) -> int:
+        return self.__barra__[color]
+
+    def fichas_fuera(self, color: str) -> int:
+        return self.__fichas_fuera__[color]
