@@ -19,12 +19,13 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Hago un test para verificar que los movimientos sean validos y con sentidos. 
 
-## [0.3.0] - 2025-09-12 15:22
+## [0.4.0] - 2025-09-12 15:22
 ### Added
 - - Se encapsularon los atributos de la clase **Tablero** agregando métodos *getters*:
   - `obtener_puntos()`
   - `fichas_en_barra(color)`
-  - `fichas_fuera(color)`
+  - `fichas_fuera(color)`.
+
 
 
 
