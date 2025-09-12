@@ -15,3 +15,11 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Se agregó test unitario para verificar la dirección de **Jugador 1** y **Jugador 2**.
 
+## [0.3.0] - 2025-09-12 14:39
+### Added
+- Hago un test para verificar que los movimientos sean validos y con sentidos. 
+
+
+
+
+
