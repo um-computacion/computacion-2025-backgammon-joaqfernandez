@@ -18,6 +18,14 @@ class TestJugador(unittest.TestCase):
         movim_jug2 = self.negro.movimientos_legales(self.tablero, dados)
         self.assertIsInstance(movim_jug1, list)
         self.assertIsInstance(movim_jug2, list)
+    
+    def test_mover_valido(self):
+        dados = [1, 2]
+        movim = self.blanco.movimientos_legales(self.tablero, dados)
+        if movim:
+            origen, destino, dado = movim[0]
+            d_aplicado = self.blanco.mover(self.tablero, origen, dado)
+            self.assertEqual(destino, d_aplicado)
 
 
 if __name__ == "__main__":
