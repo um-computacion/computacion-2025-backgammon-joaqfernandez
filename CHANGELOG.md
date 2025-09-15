@@ -19,6 +19,13 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Hago un test para verificar que los movimientos sean validos y con sentidos. 
 
+## [0.4.0] - 2025-09-15 13:28
+### Added
+- Hago un test para comprobar movimientos legales(cumplan las reglas).
+  - Busca una ficha blanca y la mueve
+  
+
+
 
 
 
