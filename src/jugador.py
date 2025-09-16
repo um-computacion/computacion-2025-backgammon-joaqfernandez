@@ -37,3 +37,6 @@ class Jugador:
                     legales.append((origen, destino, dado))
 
         return legales
+
+    def puede_mover(self, tablero, dados: List[int]) -> bool:
+        return len(self.movimientos_legales(tablero, dados)) > 0
