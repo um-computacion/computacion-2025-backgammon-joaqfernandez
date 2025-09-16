@@ -24,9 +24,15 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - Hago un test para comprobar movimientos legales(cumplan las reglas).
   - Busca una ficha blanca y la mueve
   
+## [0.5.0] - 2025-09-16 15:36
+### Added
+- Agrego una funcion(hecha por ia) para imprimir los movimientos legales, devolviendome una lista con una tupla adentro donde hay 3 enteros [int, int, int].
+  [int, int, int] = 5, 3, 2 se mueve desde el punto 5 al 3, con el dado 2.
 
-
-
+## [0.6.0] - 2025-09-16 15:41
+### Added
+- Agrego una funcion(hecha por ia) para imprimir los movimientos legales, devolviendome una lista con una tupla adentro donde hay 3 enteros [int, int, int].
+  [int, int, int] = 5, 3, 2 se mueve desde el punto 5 al 3, con el dado 2.
 
 
 
