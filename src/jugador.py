@@ -40,3 +40,8 @@ class Jugador:
 
     def puede_mover(self, tablero, dados: List[int]) -> bool:
         return len(self.movimientos_legales(tablero, dados)) > 0
+    
+    def mover(self, tablero, origen: int, dado: int) -> int:
+        destino = tablero.lugar_destino(self.__color__, origen, dado)
+        tablero.aplicar_hay_ficha(self.__color__, origen, dado)
+        return destino
