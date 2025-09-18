@@ -31,8 +31,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [0.6.0] - 2025-09-16 15:41
 ### Added
-- Agrego una funcion(hecha por ia) para imprimir los movimientos legales, devolviendome una lista con una tupla adentro donde hay 3 enteros [int, int, int].
-  [int, int, int] = 5, 3, 2 se mueve desde el punto 5 al 3, con el dado 2.
+- Funcion en ´src/jugador.py´ que returna True si existe un al menos un posible movimiento tras el resultado del tiraje de dados. 
 
 
 
