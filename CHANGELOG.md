@@ -19,19 +19,10 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Hago un test para verificar que los movimientos sean validos y con sentidos. 
 
-## [0.4.0] - 2025-09-15 13:28
+## [0.8.0] - 2025-09-20 19:38
 ### Added
-- Hago un test para comprobar movimientos legales(cumplan las reglas).
-  - Busca una ficha blanca y la mueve
-  
-## [0.5.0] - 2025-09-16 15:36
-### Added
-- Agrego una funcion(hecha por ia) para imprimir los movimientos legales, devolviendome una lista con una tupla adentro donde hay 3 enteros [int, int, int].
-  [int, int, int] = 5, 3, 2 se mueve desde el punto 5 al 3, con el dado 2.
+- Funcion en src/tablero.pu que responde si ese jugador tiene fichas en la barra. En backgammon, si tenés fichas en la barra, estás obligado a reingresar antes de mover cualquier otra ficha 
 
-## [0.6.0] - 2025-09-16 15:41
-### Added
-- Funcion en ´src/jugador.py´ que returna True si existe un al menos un posible movimiento tras el resultado del tiraje de dados. 
 
 
 

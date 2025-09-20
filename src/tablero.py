@@ -72,3 +72,6 @@ class Tablero:
 
     def fichas_fuera(self, color: str) -> int:
         return self.__fichas_fuera__[color]
+        
+    def hay_obligacion_reingresar(self, color: str) -> bool:
+        return self.__barra__[color] > 0
