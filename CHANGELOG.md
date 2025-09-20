@@ -33,5 +33,11 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Funcion en ´src/jugador.py´ que returna True si existe un al menos un posible movimiento tras el resultado del tiraje de dados. 
 
+## [0.7.0] - 2025-09-19 20:29
+### Added
+- Funcion en ´src/jugador.py´ para aplicar los movimentos que da el jugador
+
+
+
 
 
