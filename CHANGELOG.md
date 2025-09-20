@@ -19,6 +19,9 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Hago un test para verificar que los movimientos sean validos y con sentidos. 
 
+## [0.8.0] - 2025-09-20 19:38
+### Added
+- Funcion en src/tablero.pu que responde si ese jugador tiene fichas en la barra. En backgammon, si tenés fichas en la barra, estás obligado a reingresar antes de mover cualquier otra ficha 
 
 
 
