@@ -45,6 +45,8 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
 
-
+## [0.10.0] - 2025-09-22 14:53
+### Added
+- Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
 
 
