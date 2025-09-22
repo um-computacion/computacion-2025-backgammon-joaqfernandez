@@ -75,3 +75,11 @@ class Tablero:
     
     def hay_obligacion_reingresar(self, color: str) -> bool:
         return self.__barra__[color] > 0
+    
+def punto_entrada_desde_barra(self, color: str, dado: int) -> int:
+    if not (1 <= dado <= 6):
+        raise ValueError("Dado inválido para reingreso")
+    if color == ficha1:  
+        return 24 - dado
+    else:                 
+        return dado - 1
