@@ -41,6 +41,12 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Funcion en src/tablero.pu que responde si ese jugador tiene fichas en la barra. En backgammon, si tenés fichas en la barra, estás obligado a reingresar antes de mover cualquier otra ficha 
 
+## [0.9.0] - 2025-09-22 14:49
+### Added
+- Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
 
+## [0.10.0] - 2025-09-22 14:53
+### Added
+- Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
 
 
