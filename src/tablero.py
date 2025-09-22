@@ -83,3 +83,13 @@ def punto_entrada_desde_barra(self, color: str, dado: int) -> int:
         return 24 - dado
     else:                 
         return dado - 1
+    
+def puede_reingresar(self, color: str, dado: int) -> bool:
+    destino = self.punto_entrada_desde_barra(color, dado)
+    punto = self.__puntos__[destino]
+    if punto["cantidad"] == 0:
+        return True
+    if punto["color"] == color:
+        return True
+    
+    return punto["cantidad"] == 1 and punto["color"] != color
