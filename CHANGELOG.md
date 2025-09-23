@@ -49,4 +49,8 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
 
-
+## [0.11.0] - 2025-09-22 20:37
+### Added
+- Funcion para aplicar el reingreso y reingresar una ficha desde la barra al tablero usando 'dado'.
+    Captura si hay 1 rival en el destino.
+    Devuelve el índice 'destino' aplicado.
