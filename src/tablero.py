@@ -72,3 +72,49 @@ class Tablero:
 
     def fichas_fuera(self, color: str) -> int:
         return self.__fichas_fuera__[color]
+    
+    def hay_obligacion_reingresar(self, color: str) -> bool:
+        return self.__barra__[color] > 0
+    
+def punto_entrada_desde_barra(self, color: str, dado: int) -> int:
+    if not (1 <= dado <= 6):
+        raise ValueError("Dado inválido para reingreso")
+    if color == ficha1:  
+        return 24 - dado
+    else:                 
+        return dado - 1
+    
+def puede_reingresar(self, color: str, dado: int) -> bool:
+    destino = self.punto_entrada_desde_barra(color, dado)
+    punto = self.__puntos__[destino]
+    if punto["cantidad"] == 0:
+        return True
+    if punto["color"] == color:
+        return True
+    
+    return punto["cantidad"] == 1 and punto["color"] != color
+
+def aplicar_reingreso(self, color: str, dado: int) -> int:
+    if self.__barra__[color] <= 0:
+        raise ValueError("No hay fichas en barra para reingresar")
+    if not self.puede_reingresar(color, dado):
+        raise ValueError("No se puede reingresar con este dado")
+
+    destino = self.punto_entrada_desde_barra(color, dado)
+    punto = self.__puntos__[destino]
+
+
+    if punto["cantidad"] == 1 and punto["color"] != color:
+        rival = ficha1 if color == ficha2 else ficha2
+        self.__barra__[rival] += 1
+        punto["color"] = color
+        punto["cantidad"] = 1
+    else:
+        if punto["cantidad"] == 0:
+            punto["color"] = color
+            punto["cantidad"] = 1
+        else:
+            punto["cantidad"] += 1
+
+    self.__barra__[color] -= 1
+    return destino

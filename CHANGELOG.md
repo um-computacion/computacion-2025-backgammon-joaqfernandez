@@ -39,5 +39,24 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 
 
+## [0.7.0] - 2025-09-19 20:29
+### Added
+- Funcion en ´src/jugador.py´ para aplicar los movimentos que da el jugador
 
+## [0.8.0] - 2025-09-20 19:38
+### Added
+- Funcion en src/tablero.pu que responde si ese jugador tiene fichas en la barra. En backgammon, si tenés fichas en la barra, estás obligado a reingresar antes de mover cualquier otra ficha 
 
+## [0.9.0] - 2025-09-22 14:49
+### Added
+- Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
+
+## [0.10.0] - 2025-09-22 14:53
+### Added
+- Hago una funcion en jugador que devuelve el índice de punto de entrada al tablero desde la barra para un dado dado.
+
+## [0.11.0] - 2025-09-22 20:37
+### Added
+- Funcion para aplicar el reingreso y reingresar una ficha desde la barra al tablero usando 'dado'.
+    Captura si hay 1 rival en el destino.
+    Devuelve el índice 'destino' aplicado.
