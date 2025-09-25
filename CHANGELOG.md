@@ -54,3 +54,10 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - Funcion para aplicar el reingreso y reingresar una ficha desde la barra al tablero usando 'dado'.
     Captura si hay 1 rival en el destino.
     Devuelve el índice 'destino' aplicado.
+
+## [0.12.0] - 2025-09-22 16:56
+### Added
+- - Método `movimientos_legales` en `Jugador`:
+  - Devuelve lista de jugadas válidas `(origen, destino, dado)`.
+  - Soporta reingresos desde la barra (convención `origen = -1`).
+  - Integra validaciones con `Tablero` (`hay_obligacion_reingresar`, `puede_reingresar`)
