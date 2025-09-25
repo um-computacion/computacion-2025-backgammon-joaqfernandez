@@ -37,12 +37,6 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Funcion en ´src/jugador.py´ para aplicar los movimentos que da el jugador
 
-
-
-## [0.7.0] - 2025-09-19 20:29
-### Added
-- Funcion en ´src/jugador.py´ para aplicar los movimentos que da el jugador
-
 ## [0.8.0] - 2025-09-20 19:38
 ### Added
 - Funcion en src/tablero.pu que responde si ese jugador tiene fichas en la barra. En backgammon, si tenés fichas en la barra, estás obligado a reingresar antes de mover cualquier otra ficha 
@@ -60,3 +54,10 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - Funcion para aplicar el reingreso y reingresar una ficha desde la barra al tablero usando 'dado'.
     Captura si hay 1 rival en el destino.
     Devuelve el índice 'destino' aplicado.
+
+## [0.12.0] - 2025-09-22 16:56
+### Added
+- - Método `movimientos_legales` en `Jugador`:
+  - Devuelve lista de jugadas válidas `(origen, destino, dado)`.
+  - Soporta reingresos desde la barra (convención `origen = -1`).
+  - Integra validaciones con `Tablero` (`hay_obligacion_reingresar`, `puede_reingresar`)
