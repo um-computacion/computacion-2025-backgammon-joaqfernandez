@@ -27,6 +27,15 @@ class TestJugador(unittest.TestCase):
             d_aplicado = self.blanco.mover(self.tablero, origen, dado)
             self.assertEqual(destino, d_aplicado)
 
+    def test_movimientos_legales_con_barra(self):
+        tablero = Tablero()
+        tablero._Tablero__barra__["BLANCO"] = 1
+        jugador = Jugador("Blanco", "BLANCO")
+        dados = [1, 6]
+
+        movs = jugador.movimientos_legales(tablero, dados)
+        self.assertIn((-1, 23, 1), movs)
+        self.assertNotIn((-1, 18, 6), movs)
 
 if __name__ == "__main__":
     unittest.main()
