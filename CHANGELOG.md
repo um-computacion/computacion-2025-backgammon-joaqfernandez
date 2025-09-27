@@ -55,9 +55,13 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
     Captura si hay 1 rival en el destino.
     Devuelve el índice 'destino' aplicado.
 
-## [0.12.0] - 2025-09-22 16:56
+## [0.12.0] - 2025-09-25 16:56
 ### Added
 - - Método `movimientos_legales` en `Jugador`:
   - Devuelve lista de jugadas válidas `(origen, destino, dado)`.
   - Soporta reingresos desde la barra (convención `origen = -1`).
   - Integra validaciones con `Tablero` (`hay_obligacion_reingresar`, `puede_reingresar`)
+
+## [0.13.0] - 2025-09-26 21:54
+### Added
+- Test para verificar que el método movimientos_legales de la clase Jugador funciona correctamente cuando el jugador tiene fichas en la barra (es decir, fichas que fueron "comidas" y deben reingresar al tablero)
