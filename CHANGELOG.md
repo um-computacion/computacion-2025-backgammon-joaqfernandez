@@ -65,3 +65,7 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ## [0.13.0] - 2025-09-26 21:54
 ### Added
 - Test para verificar que el método movimientos_legales de la clase Jugador funciona correctamente cuando el jugador tiene fichas en la barra (es decir, fichas que fueron "comidas" y deben reingresar al tablero)
+
+## [0.14.0] - 2025-09-27 17:32
+### Added
+- El jugador ahora puede obtener una lista de todos sus movimientos legales dados unos dados, ya sea desde el tablero o desde la barra
