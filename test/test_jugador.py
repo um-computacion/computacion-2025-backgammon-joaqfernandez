@@ -37,5 +37,19 @@ class TestJugador(unittest.TestCase):
         self.assertIn((-1, 23, 1), movs)
         self.assertNotIn((-1, 18, 6), movs)
 
+    def test_movimientos_legales_sin_barra(self):
+        tablero = Tablero()
+        jugador_blanco = Jugador("Blanco", "BLANCO")
+        dados = [1, 2]
+
+        movs = jugador_blanco.movimientos_legales(tablero, dados)
+        self.assertGreater(len(movs), 0)
+        for origen, destino, dado_usado in movs:
+            self.assertIsInstance(origen, int)
+            self.assertIsInstance(destino, int)
+            self.assertIn(dado_usado, dados)
+
+
+    
 if __name__ == "__main__":
     unittest.main()
