@@ -57,5 +57,8 @@ class testTablero(unittest.TestCase):
                 self.assertIsNone(p[i]["color"])
                 self.assertEqual(p[i]["cantidad"], 0)
 
+    def test_no_puede_reingresar_negro_dado6(self):
+        tablero = Tablero()
+        self.assertFalse(tablero.puede_reingresar("NEGRO", 6))
 if __name__ == "__main__":
     unittest.main()
