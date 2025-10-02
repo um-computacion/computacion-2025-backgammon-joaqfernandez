@@ -69,3 +69,12 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ## [0.14.0] - 2025-09-27 17:32
 ### Added
 - El jugador ahora puede obtener una lista de todos sus movimientos legales dados unos dados, ya sea desde el tablero o desde la barra
+
+## [0.15.0] - 2025-09-29 09:35
+### Added
+- Tests para la clase `Tablero`, verificando el estado inicial del tablero según las reglas estándar.
+
+
+## [0.16.0] - 2025-09-30 20:23
+### Added
+- Test para que ficha negra pueda o no entrar en 5, que tiene 5 BLANCAS → bloqueado
