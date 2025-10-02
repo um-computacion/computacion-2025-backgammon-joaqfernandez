@@ -78,3 +78,17 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ## [0.16.0] - 2025-09-30 20:23
 ### Added
 - Test para que ficha negra pueda o no entrar en 5, que tiene 5 BLANCAS → bloqueado
+
+## [0.17.0] - 2025-10-2 12:17
+### Added
+- hago 3 test en jugador. 
+  - creador de color correcto (que sea blanco o negro, no ROJO)
+  - Mover con movimientos disponibles
+  - Checkear que los colores sean los correctos (negro o blanco)
+
+## [0.18.0] - 2025-10-2 12:23
+### Added
+- idento una funcion en clase jugador
+
+
+
