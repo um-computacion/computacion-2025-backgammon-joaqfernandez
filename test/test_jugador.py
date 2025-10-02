@@ -21,6 +21,11 @@ class TestJugador(unittest.TestCase):
         self.assertEqual(self.blanco.direccion(self.tablero), -1)
         self.assertEqual(self.negro.direccion(self.tablero), +1)
 
+    def test_puede_mover_con_movimientos_disponibles(self):
+        dados = [1, 2]
+        resultado = self.blanco.puede_mover(self.tablero, dados)
+        self.assertTrue(resultado)
+
     def test_movimientos_legales_funcione(self):
         dados = [1, 2]
         movim_jug1 = self.blanco.movimientos_legales(self.tablero, dados)
