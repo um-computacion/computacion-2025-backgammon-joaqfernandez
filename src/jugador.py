@@ -34,7 +34,7 @@ class Jugador:
             return legales
 
         for origen in range(24):
-            p = tablero._Tablero__puntos__[origen]
+            p = tablero._Tablero.__puntos__[origen]
             if p["color"] != self.__color__ or p["cantidad"] == 0:
                 continue
             for d in dados:
