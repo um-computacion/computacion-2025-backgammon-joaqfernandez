@@ -8,6 +8,11 @@ class TestJugador(unittest.TestCase):
         self.blanco = Jugador("Joaquin", ficha1)
         self.negro = Jugador("Profe Walter", ficha2)
 
+    def test_constructor_color_invalido(self):
+        with self.assertRaises(ValueError) as context:
+            Jugador("Test", "ROJO")
+        self.assertIn("Color inválido", str(context.exception)) 
+        
     def test_direccion(self):
         self.assertEqual(self.blanco.direccion(self.tablero), -1)
         self.assertEqual(self.negro.direccion(self.tablero), +1)
