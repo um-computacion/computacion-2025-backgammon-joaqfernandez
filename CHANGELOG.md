@@ -91,4 +91,10 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - idento una funcion en clase jugador
 
 
+## [0.19.0] - 2025-10-4 18:40
+### Added
+- Creo el constructor para el archivo juego.py 
+
+
+
 
