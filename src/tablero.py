@@ -87,11 +87,11 @@ class Tablero:
     def puede_reingresar(self, color: str, dado: int) -> bool:
         destino = self.punto_entrada_desde_barra(color, dado)
         punto = self.__puntos__[destino]
-            if punto["cantidad"] == 0:
+        if punto["cantidad"] == 0:
                 return True
-            if punto["color"] == color:
+        if punto["color"] == color:
                 return True
-            return punto["cantidad"] == 1 and punto["color"] != color
+        return punto["cantidad"] == 1 and punto["color"] != color
 
     def aplicar_reingreso(self, color: str, dado: int) -> int:
         if self.__barra__[color] <= 0:
