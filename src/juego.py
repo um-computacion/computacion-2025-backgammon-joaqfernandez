@@ -34,7 +34,6 @@ class BackgammonGame:
     
     @property
     def ganador(self):
-
         return self.__ganador__
     
     @property
