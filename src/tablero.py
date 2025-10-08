@@ -90,7 +90,7 @@ class Tablero:
         if punto["cantidad"] == 0:
                 return True
         if punto["color"] == color:
-                return True
+                 return True
         return punto["cantidad"] == 1 and punto["color"] != color
 
     def aplicar_reingreso(self, color: str, dado: int) -> int:
