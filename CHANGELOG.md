@@ -95,6 +95,16 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Creo el constructor para el archivo juego.py 
 
+## [0.20.0] - 2025-10-7 21:10
+### Added
+- Se agregaron propiedades (`@property`) en la clase `Juego` para acceder de forma segura a los atributos privados:
+  - `tablero`
+  - `jugador1`
+  - `jugador2`
+  - `turno_actual`
+  - `ganador`
+  - `dados_disponibles`
+
 
 
 
