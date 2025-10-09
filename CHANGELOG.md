@@ -105,6 +105,9 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
   - `ganador`
   - `dados_disponibles`
 
+## [0.21.0] - 2025-10-9 10:25
+### Added
+- Creo una funcion que determina quién juega primero mediante tiradas de dados. Cada jugador tira hasta que uno obtenga un valor mayor. Retorna el jugador que comienza
 
 
 
