@@ -39,3 +39,25 @@ class BackgammonGame:
     @property
     def dados_disponibles(self) -> list:
         return self.__dados_disponibles__
+
+    def determinar_primer_turno(self) -> Jugador:
+        print(f"\n{self.__jugador1__.nombre} vs {self.__jugador2__.nombre}")
+        print("Tirando dados para determinar quién empieza...")
+        
+        while True:
+            dado1_j1, dado2_j1 = self.__dados__.tirar_dado()
+            suma_j1 = dado1_j1 + dado2_j1
+            print(f"{self.__jugador1__.nombre} sacó: {dado1_j1} + {dado2_j1} = {suma_j1}")
+            
+            dado1_j2, dado2_j2 = self.__dados__.tirar_dado()
+            suma_j2 = dado1_j2 + dado2_j2
+            print(f"{self.__jugador2__.nombre} sacó: {dado1_j2} + {dado2_j2} = {suma_j2}")
+            
+            if suma_j1 > suma_j2:
+                print(f"\n¡{self.__jugador1__.nombre} comienza!\n")
+                return self.__jugador1__
+            elif suma_j2 > suma_j1:
+                print(f"\n¡{self.__jugador2__.nombre} comienza!\n")
+                return self.__jugador2__
+            else:
+                print("¡Empate! Tirando de nuevo...\n")
