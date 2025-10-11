@@ -61,3 +61,6 @@ class BackgammonGame:
                 return self.__jugador2__
             else:
                 print("¡Empate! Tirando de nuevo...\n")
+
+    
+    
