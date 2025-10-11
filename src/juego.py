@@ -61,3 +61,28 @@ class BackgammonGame:
                 return self.__jugador2__
             else:
                 print("¡Empate! Tirando de nuevo...\n")
+
+    
+    def iniciar_juego(self):
+        """
+        Inicia el juego determinando quién juega primero.
+        """
+        self.__turno_actual__ = self.determinar_primer_turno()
+
+    def tirar_dados(self) -> tuple:
+        """
+        Tira los dados y configura los dados disponibles.
+        Si es doble, permite usar cada valor dos veces.
+        
+        Returns:
+            tuple: Los valores de los dados (dado1, dado2).
+        """
+        dado1, dado2 = self.__dados__.tirar_dado()
+        
+        if dado1 == dado2:
+            # Dobles: se pueden usar 4 veces
+            self.__dados_disponibles__ = [dado1, dado1, dado1, dado1]
+        else:
+            self.__dados_disponibles__ = [dado1, dado2]
+        
+        return dado1, dado2

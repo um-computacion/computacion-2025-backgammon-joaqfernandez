@@ -109,5 +109,8 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Added
 - Creo una funcion que determina quién juega primero mediante tiradas de dados. Cada jugador tira hasta que uno obtenga un valor mayor. Retorna el jugador que comienza
 
-
+## [0.22.0] - 2025-10-11 16:36
+### Added
+- Se agregó la función `iniciar_juego()` dentro de `src/juego.py` para determinar automáticamente el jugador que inicia la partida según las reglas de Backgammon.
+- Se implementó la función `tirar_dados()` con soporte completo para tiradas dobles, generando correctamente los valores de los dados y configurando la lista `__dados_disponibles__`
 
