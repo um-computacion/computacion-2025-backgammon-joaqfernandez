@@ -114,3 +114,15 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - Se agregó la función `iniciar_juego()` dentro de `src/juego.py` para determinar automáticamente el jugador que inicia la partida según las reglas de Backgammon.
 - Se implementó la función `tirar_dados()` con soporte completo para tiradas dobles, generando correctamente los valores de los dados y configurando la lista `__dados_disponibles__`
 
+## [0.23.0] - 2025-10-16 20:43
+### Added
+- `usar_dado(valor: int)` en `src/juego.py`: consume un valor de dado disponible y valida su existencia.
+- `tiene_dados_disponibles() -> bool` en `src/juego.py`: expone si aún quedan dados por jugar en el turno actual.
+- `puede_realizar_movimiento() -> bool` en `src/juego.py`: consulta a `__turno_actual__` y `__tablero__` para determinar si hay movimientos válidos con los dados restantes.
+- `realizar_movimiento(origen: int, dado: int) -> bool` en `src/juego.py`:
+  - Soporte para **reingreso desde la barra** (`origen == -1`) con validaciones: obligación de reingreso y posibilidad con el dado específico.
+  - Soporte para **movimiento regular** con verificación previa y aplicación de captura/avance.
+  - Consumo automático del dado utilizado.
+- `cambiar_turno()` en `src/juego.py`: alterna entre `__jugador1__` y `__jugador2__` y resetea `__dados_disponibles__`.
+
+
