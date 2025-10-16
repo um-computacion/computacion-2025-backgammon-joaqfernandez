@@ -64,19 +64,9 @@ class BackgammonGame:
 
     
     def iniciar_juego(self):
-        """
-        Inicia el juego determinando quién juega primero.
-        """
         self.__turno_actual__ = self.determinar_primer_turno()
 
     def tirar_dados(self) -> tuple:
-        """
-        Tira los dados y configura los dados disponibles.
-        Si es doble, permite usar cada valor dos veces.
-        
-        Returns:
-            tuple: Los valores de los dados (dado1, dado2).
-        """
         dado1, dado2 = self.__dados__.tirar_dado()
         
         if dado1 == dado2:
@@ -86,3 +76,9 @@ class BackgammonGame:
             self.__dados_disponibles__ = [dado1, dado2]
         
         return dado1, dado2
+
+    def usar_dado(self, valor: int):
+
+        if valor not in self.__dados_disponibles__:
+            raise ValueError(f"El dado {valor} no está disponible")
+        self.__dados_disponibles__.remove(valor)
