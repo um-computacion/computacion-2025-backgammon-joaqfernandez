@@ -120,3 +120,10 @@ class BackgammonGame:
         self.usar_dado(dado)
         return True
     
+    def cambiar_turno(self):
+        if self.__turno_actual__ == self.__jugador1__:
+            self.__turno_actual__ = self.__jugador2__
+        else:
+            self.__turno_actual__ = self.__jugador1__
+        
+        self.__dados_disponibles__ = []
