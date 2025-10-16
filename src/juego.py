@@ -82,3 +82,12 @@ class BackgammonGame:
         if valor not in self.__dados_disponibles__:
             raise ValueError(f"El dado {valor} no está disponible")
         self.__dados_disponibles__.remove(valor)
+
+    def tiene_dados_disponibles(self) -> bool:
+        """
+        Verifica si quedan dados disponibles para usar.
+        
+        Returns:
+            bool: True si hay dados disponibles, False si no.
+        """
+        return len(self.__dados_disponibles__) > 0
