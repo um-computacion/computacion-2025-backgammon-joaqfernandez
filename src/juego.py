@@ -64,19 +64,9 @@ class BackgammonGame:
 
     
     def iniciar_juego(self):
-        """
-        Inicia el juego determinando quién juega primero.
-        """
         self.__turno_actual__ = self.determinar_primer_turno()
 
     def tirar_dados(self) -> tuple:
-        """
-        Tira los dados y configura los dados disponibles.
-        Si es doble, permite usar cada valor dos veces.
-        
-        Returns:
-            tuple: Los valores de los dados (dado1, dado2).
-        """
         dado1, dado2 = self.__dados__.tirar_dado()
         
         if dado1 == dado2:
@@ -86,3 +76,54 @@ class BackgammonGame:
             self.__dados_disponibles__ = [dado1, dado2]
         
         return dado1, dado2
+
+    def usar_dado(self, valor: int):
+
+        if valor not in self.__dados_disponibles__:
+            raise ValueError(f"El dado {valor} no está disponible")
+        self.__dados_disponibles__.remove(valor)
+
+    def tiene_dados_disponibles(self) -> bool:
+        return len(self.__dados_disponibles__) > 0
+
+    def puede_realizar_movimiento(self) -> bool:
+        if not self.tiene_dados_disponibles():
+            return False
+        
+        return self.__turno_actual__.puede_mover(
+            self.__tablero__, 
+            self.__dados_disponibles__
+        )
+    
+    def realizar_movimiento(self, origen: int, dado: int) -> bool:
+        if dado not in self.__dados_disponibles__:
+            raise ValueError(f"El dado {dado} no está disponible")
+        
+        color = self.__turno_actual__.color
+        
+        # Movimiento desde la barra
+        if origen == -1:
+            if not self.__tablero__.hay_obligacion_reingresar(color):
+                raise ValueError("No hay fichas en la barra para reingresar")
+            if not self.__tablero__.puede_reingresar(color, dado):
+                raise ValueError("No se puede reingresar con ese dado")
+            
+            self.__tablero__.aplicar_reingreso(color, dado)
+            self.usar_dado(dado)
+            return True
+        
+        # Movimiento regular
+        if not self.__tablero__.hay_ficha_o_no(color, origen, dado):
+            raise ValueError("Movimiento inválido")
+        
+        self.__tablero__.aplicar_hay_ficha(color, origen, dado)
+        self.usar_dado(dado)
+        return True
+    
+    def cambiar_turno(self):
+        if self.__turno_actual__ == self.__jugador1__:
+            self.__turno_actual__ = self.__jugador2__
+        else:
+            self.__turno_actual__ = self.__jugador1__
+        
+        self.__dados_disponibles__ = []
