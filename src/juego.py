@@ -95,5 +95,28 @@ class BackgammonGame:
             self.__dados_disponibles__
         )
     
-
+    def realizar_movimiento(self, origen: int, dado: int) -> bool:
+        if dado not in self.__dados_disponibles__:
+            raise ValueError(f"El dado {dado} no está disponible")
+        
+        color = self.__turno_actual__.color
+        
+        # Movimiento desde la barra
+        if origen == -1:
+            if not self.__tablero__.hay_obligacion_reingresar(color):
+                raise ValueError("No hay fichas en la barra para reingresar")
+            if not self.__tablero__.puede_reingresar(color, dado):
+                raise ValueError("No se puede reingresar con ese dado")
+            
+            self.__tablero__.aplicar_reingreso(color, dado)
+            self.usar_dado(dado)
+            return True
+        
+        # Movimiento regular
+        if not self.__tablero__.hay_ficha_o_no(color, origen, dado):
+            raise ValueError("Movimiento inválido")
+        
+        self.__tablero__.aplicar_hay_ficha(color, origen, dado)
+        self.usar_dado(dado)
+        return True
     
