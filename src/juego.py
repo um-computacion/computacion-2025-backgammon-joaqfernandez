@@ -84,10 +84,16 @@ class BackgammonGame:
         self.__dados_disponibles__.remove(valor)
 
     def tiene_dados_disponibles(self) -> bool:
-        """
-        Verifica si quedan dados disponibles para usar.
-        
-        Returns:
-            bool: True si hay dados disponibles, False si no.
-        """
         return len(self.__dados_disponibles__) > 0
+
+    def puede_realizar_movimiento(self) -> bool:
+        if not self.tiene_dados_disponibles():
+            return False
+        
+        return self.__turno_actual__.puede_mover(
+            self.__tablero__, 
+            self.__dados_disponibles__
+        )
+    
+
+    
