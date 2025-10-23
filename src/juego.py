@@ -166,3 +166,15 @@ class BackgammonGame:
 
     def esta_terminado(self) -> bool:
         return self.__ganador__ is not None
+
+    def obtener_estado_juego(self) -> dict:
+        return {
+            "turno": self.__turno_actual__.nombre if self.__turno_actual__ else None,
+            "color_turno": self.__turno_actual__.color if self.__turno_actual__ else None,
+            "dados_disponibles": self.__dados_disponibles__.copy(),
+            "ganador": self.__ganador__.nombre if self.__ganador__ else None,
+            "fichas_blanco_barra": self.__tablero__.fichas_en_barra(ficha1),
+            "fichas_negro_barra": self.__tablero__.fichas_en_barra(ficha2),
+            "fichas_blanco_fuera": self.__tablero__.fichas_fuera(ficha1),
+            "fichas_negro_fuera": self.__tablero__.fichas_fuera(ficha2),
+        }
