@@ -127,3 +127,14 @@ class BackgammonGame:
             self.__turno_actual__ = self.__jugador1__
         
         self.__dados_disponibles__ = []
+
+    def verificar_victoria(self) -> bool:
+        color = self.__turno_actual__.color
+        fichas_fuera = self.__tablero__.fichas_fuera(color)
+        
+        # Si tiene 15 fichas fuera, ganó
+        if fichas_fuera == 15:
+            self.__ganador__ = self.__turno_actual__
+            return True
+        
+        return False
