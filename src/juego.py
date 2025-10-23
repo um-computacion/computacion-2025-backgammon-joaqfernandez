@@ -178,3 +178,10 @@ class BackgammonGame:
             "fichas_blanco_fuera": self.__tablero__.fichas_fuera(ficha1),
             "fichas_negro_fuera": self.__tablero__.fichas_fuera(ficha2),
         }
+
+    def reiniciar_juego(self):
+        self.__tablero__ = Tablero()
+        self.__turno_actual__ = None
+        self.__ganador__ = None
+        self.__dados_disponibles__ = []
+        print("\n¡Juego reiniciado!")
