@@ -127,3 +127,61 @@ class BackgammonGame:
             self.__turno_actual__ = self.__jugador1__
         
         self.__dados_disponibles__ = []
+
+    def verificar_victoria(self) -> bool:
+        color = self.__turno_actual__.color
+        fichas_fuera = self.__tablero__.fichas_fuera(color)
+        
+        # Si tiene 15 fichas fuera, ganó
+        if fichas_fuera == 15:
+            self.__ganador__ = self.__turno_actual__
+            return True
+        
+        return False
+
+    def obtener_movimientos_legales(self) -> list:
+        if not self.tiene_dados_disponibles():
+            return []
+        
+        return self.__turno_actual__.movimientos_legales(
+            self.__tablero__, 
+            self.__dados_disponibles__
+        )
+    
+    def jugar_turno(self) -> bool:
+        # Tirar dados
+        dado1, dado2 = self.tirar_dados()
+        print(f"\n{self.__turno_actual__.nombre} tiró: {dado1} y {dado2}")
+        
+        if dado1 == dado2:
+            print(f"¡Dobles! Puedes usar {dado1} cuatro veces")
+        
+        # Verificar si puede mover
+        if not self.puede_realizar_movimiento():
+            print(f"{self.__turno_actual__.nombre} no puede mover. Pierde el turno.")
+            self.cambiar_turno()
+            return False
+        
+        return True
+
+    def esta_terminado(self) -> bool:
+        return self.__ganador__ is not None
+
+    def obtener_estado_juego(self) -> dict:
+        return {
+            "turno": self.__turno_actual__.nombre if self.__turno_actual__ else None,
+            "color_turno": self.__turno_actual__.color if self.__turno_actual__ else None,
+            "dados_disponibles": self.__dados_disponibles__.copy(),
+            "ganador": self.__ganador__.nombre if self.__ganador__ else None,
+            "fichas_blanco_barra": self.__tablero__.fichas_en_barra(ficha1),
+            "fichas_negro_barra": self.__tablero__.fichas_en_barra(ficha2),
+            "fichas_blanco_fuera": self.__tablero__.fichas_fuera(ficha1),
+            "fichas_negro_fuera": self.__tablero__.fichas_fuera(ficha2),
+        }
+
+    def reiniciar_juego(self):
+        self.__tablero__ = Tablero()
+        self.__turno_actual__ = None
+        self.__ganador__ = None
+        self.__dados_disponibles__ = []
+        print("\n¡Juego reiniciado!")

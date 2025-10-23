@@ -125,4 +125,13 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
   - Consumo automático del dado utilizado.
 - `cambiar_turno()` en `src/juego.py`: alterna entre `__jugador1__` y `__jugador2__` y resetea `__dados_disponibles__`.
 
+## [0.24.0] - 2025-10-23 15:41
+### Added
+- `verificar_victoria() -> bool` en `src/juego.py`: determina si el jugador actual ganó (15 fichas fuera) y setea `__ganador__`.
+- `obtener_movimientos_legales() -> list` en `src/juego.py`: expone desde `Jugador` los movimientos válidos dados el estado de `Tablero` y `__dados_disponibles__`.
+- `jugar_turno() -> bool` en `src/juego.py`: orquesta un turno completo (tirada de dados, detección de dobles, chequeo de posibilidad de mover y manejo de pérdida de turno).
+- `esta_terminado() -> bool` en `src/juego.py`: consulta rápida para saber si hay ganador.
+- `obtener_estado_juego() -> dict` en `src/juego.py`: snapshot del estado (turno, color, dados disponibles, ganador, fichas en barra y fuera por color).
+- `reiniciar_juego()` en `src/juego.py`: reestablece `Tablero`, limpia `__turno_actual__`, `__ganador__` y `__dados_disponibles__`.
+
 
