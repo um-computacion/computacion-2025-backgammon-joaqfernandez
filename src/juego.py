@@ -138,3 +138,12 @@ class BackgammonGame:
             return True
         
         return False
+
+    def obtener_movimientos_legales(self) -> list:
+        if not self.tiene_dados_disponibles():
+            return []
+        
+        return self.__turno_actual__.movimientos_legales(
+            self.__tablero__, 
+            self.__dados_disponibles__
+        )
