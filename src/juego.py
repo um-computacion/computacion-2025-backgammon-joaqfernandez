@@ -147,3 +147,19 @@ class BackgammonGame:
             self.__tablero__, 
             self.__dados_disponibles__
         )
+    
+    def jugar_turno(self) -> bool:
+        # Tirar dados
+        dado1, dado2 = self.tirar_dados()
+        print(f"\n{self.__turno_actual__.nombre} tiró: {dado1} y {dado2}")
+        
+        if dado1 == dado2:
+            print(f"¡Dobles! Puedes usar {dado1} cuatro veces")
+        
+        # Verificar si puede mover
+        if not self.puede_realizar_movimiento():
+            print(f"{self.__turno_actual__.nombre} no puede mover. Pierde el turno.")
+            self.cambiar_turno()
+            return False
+        
+        return True
