@@ -163,3 +163,6 @@ class BackgammonGame:
             return False
         
         return True
+
+    def esta_terminado(self) -> bool:
+        return self.__ganador__ is not None
