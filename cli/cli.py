@@ -161,3 +161,37 @@ class CLI:
         except Exception as e:
             print(f"✗ Error inesperado: {e}")
             return False
+
+    def jugar_turno(self):
+        # Tirar dados al inicio del turno
+        if not self.__juego__.jugar_turno():
+            return
+        
+        # Mientras tenga dados disponibles y pueda mover
+        while self.__juego__.tiene_dados_disponibles():
+            self.mostrar_tablero()
+            self.mostrar_estado_turno()
+            
+            if not self.__juego__.puede_realizar_movimiento():
+                print("\nNo hay más movimientos disponibles.")
+                break
+            
+            # Solicitar comando
+            comando = input("\nIngresa comando (o 'ayuda'): ").strip()
+            
+            if comando.lower() == "salir":
+                self.__ejecutando__ = False
+                break
+            
+            self.procesar_comando(comando)
+            
+            # Verificar victoria después de cada movimiento
+            if self.__juego__.verificar_victoria():
+                self.mostrar_victoria()
+                return
+        
+        # Cambiar turno si no hay más dados
+        if self.__juego__.tiene_dados_disponibles():
+            print("\nQuedan dados disponibles pero no puedes mover.")
+        
+        self.__juego__.cambiar_turno()
