@@ -195,3 +195,13 @@ class CLI:
             print("\nQuedan dados disponibles pero no puedes mover.")
         
         self.__juego__.cambiar_turno()
+
+    def mostrar_victoria(self):
+        self.mostrar_tablero()
+        ganador = self.__juego__.ganador
+        
+        print("\n" + "=" * 60)
+        print(" " * 20 + "¡VICTORIA!")
+        print("=" * 60)
+        print(f"\n¡¡{ganador.nombre} ({ganador.color}) ha ganado el juego!!\n")
+        print("=" * 60 + "\n")
