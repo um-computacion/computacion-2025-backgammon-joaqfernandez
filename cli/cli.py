@@ -100,3 +100,64 @@ class CLI:
         movimientos = self.__juego__.obtener_movimientos_legales()
         if movimientos:
             print(f"\nMovimientos posibles: {len(movimientos)}")
+
+    def mostrar_comandos(self):
+        print("\nComandos disponibles:")
+        print("  mover <origen> <dado>  - Mover ficha (ej: mover 5 3)")
+        print("  barra <dado>           - Reingresar desde barra (ej: barra 4)")
+        print("  pasar                  - Pasar turno (si no puedes mover)")
+        print("  ayuda                  - Mostrar estos comandos")
+        print("  salir                  - Salir del juego")
+        print()
+    
+    def procesar_comando(self, comando: str) -> bool:
+        partes = comando.lower().strip().split()
+        
+        if not partes:
+            return False
+        
+        accion = partes[0]
+        
+        try:
+            if accion == "mover" and len(partes) == 3:
+                origen = int(partes[1])
+                dado = int(partes[2])
+                
+                if self.__juego__.realizar_movimiento(origen, dado):
+                    print(f"✓ Movimiento realizado: {origen} → con dado {dado}")
+                    return True
+            
+            elif accion == "barra" and len(partes) == 2:
+                dado = int(partes[1])
+                
+                if self.__juego__.realizar_movimiento(-1, dado):
+                    print(f"✓ Reingreso desde barra con dado {dado}")
+                    return True
+            
+            elif accion == "pasar":
+                if not self.__juego__.puede_realizar_movimiento():
+                    print("✓ Turno pasado (no hay movimientos disponibles)")
+                    self.__juego__.cambiar_turno()
+                    return True
+                else:
+                    print("✗ Error: Aún tienes movimientos disponibles")
+                    return False
+            
+            elif accion == "ayuda":
+                self.mostrar_comandos()
+                return True
+            
+            elif accion == "salir":
+                self.__ejecutando__ = False
+                return True
+            
+            else:
+                print("✗ Comando no reconocido. Escribe 'ayuda' para ver comandos.")
+                return False
+        
+        except ValueError as e:
+            print(f"✗ Error: {e}")
+            return False
+        except Exception as e:
+            print(f"✗ Error inesperado: {e}")
+            return False
