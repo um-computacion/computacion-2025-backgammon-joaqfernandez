@@ -134,4 +134,28 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - `obtener_estado_juego() -> dict` en `src/juego.py`: snapshot del estado (turno, color, dados disponibles, ganador, fichas en barra y fuera por color).
 - `reiniciar_juego()` en `src/juego.py`: reestablece `Tablero`, limpia `__turno_actual__`, `__ganador__` y `__dados_disponibles__`.
 
+## [0.25.0] - 2025-10-27 18:59
+### Added
+- Implementación inicial de la **interfaz de línea de comandos (CLI)** para el juego de **Backgammon**.
+- Integración con la clase `BackgammonGame` ubicada en el módulo `src/juego.py`.
+- Función `limpiar_pantalla()` para limpiar la consola según el sistema operativo.
+- Mensaje de **bienvenida** y **pantalla de victoria** con formato visual.
+- Solicitud de nombres de jugadores, con valores por defecto ("Jugador 1", "Jugador 2").
+- Renderizado textual del **tablero de Backgammon**, mostrando:
+  - Los 24 puntos numerados.
+  - Fichas representadas por símbolos (`B` para blancas, `N` para negras).
+  - Fichas en la barra y fuera del tablero.
+- Comandos disponibles para interacción en consola:
+  - `mover <origen> <dado>` → Mover ficha.
+  - `barra <dado>` → Reingresar ficha desde la barra.
+  - `pasar` → Pasar turno si no hay movimientos válidos.
+  - `ayuda` → Mostrar lista de comandos.
+  - `salir` → Finalizar la partida.
+- Sistema de turnos alternado automáticamente entre jugadores.
+- Validación y ejecución de movimientos mediante `obtener_movimientos_legales()` y `realizar_movimiento()`.
+- Verificación de victoria al finalizar cada movimiento.
+- Gestión de errores y validaciones de entrada:
+  - Control de valores numéricos incorrectos.
+  - Manejo de excepciones con mensajes descriptivos.
+- Documentación en docstrings estilo PEP 257 para todas las funciones y clases.
 
