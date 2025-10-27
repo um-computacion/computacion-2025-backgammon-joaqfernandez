@@ -87,3 +87,16 @@ class CLI:
         # Parte inferior (puntos 11-0)
         print("  11  10   9   8   7   6  |  5   4   3   2   1   0")
         print("=" * 60 + "\n")
+
+    def mostrar_estado_turno(self):
+        estado = self.__juego__.obtener_estado_juego()
+        
+        print(f"Turno de: {estado['turno']} ({estado['color_turno']})")
+        
+        if estado['dados_disponibles']:
+            print(f"Dados disponibles: {estado['dados_disponibles']}")
+        
+        # Mostrar movimientos legales
+        movimientos = self.__juego__.obtener_movimientos_legales()
+        if movimientos:
+            print(f"\nMovimientos posibles: {len(movimientos)}")
