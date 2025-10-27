@@ -19,3 +19,15 @@ class CLI:
         print(" " * 20 + "BACKGAMMON")
         print("=" * 60)
         print("\n¡Bienvenido al juego de Backgammon!\n")
+
+    def solicitar_nombres(self) -> tuple:
+        print("Configuración de jugadores:")
+        nombre1 = input("Nombre del Jugador 1 (fichas BLANCAS): ").strip()
+        if not nombre1:
+            nombre1 = "Jugador 1"
+        
+        nombre2 = input("Nombre del Jugador 2 (fichas NEGRAS): ").strip()
+        if not nombre2:
+            nombre2 = "Jugador 2"
+        
+        return nombre1, nombre2
