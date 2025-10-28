@@ -57,3 +57,16 @@ class PygameUI:
         
         # Calcular dimensiones del tablero
         self.__calcular_dimensiones_tablero__()
+
+    def __calcular_dimensiones_tablero__(self):
+        self.__tablero_x__ = self.marge
+        self.__tablero_y__ = self.marge + 100
+        self.__tablero_ancho__ = self.__ancho__ - 2 * self.marge
+        self.__tablero_alto__ = self.__alto__ - 2 * self.marge - 150
+        
+        # Ancho de cada punto (triángulo)
+        self.__ancho_punto__ = self.__tablero_ancho__ // 14  # 12 puntos + 2 para la barra
+        self.__alto_punto__ = self.__tablero_alto__ // 2 - 20
+    
+    def dibujar_fondo(self):
+        self.__pantalla__.fill(self.color_fondo)
