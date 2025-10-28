@@ -70,3 +70,34 @@ class PygameUI:
     
     def dibujar_fondo(self):
         self.__pantalla__.fill(self.color_fondo)
+
+    def dibujar_tablero(self):
+        # Fondo del tablero
+        pygame.draw.rect(
+            self.__pantalla__,
+            self.color_tablero,
+            (self.__tablero_x__, self.__tablero_y__, 
+             self.__tablero_ancho__, self.__tablero_alto__)
+        )
+        
+        # Dibujar puntos (triángulos)
+        for i in range(24):
+            self.__dibujar_punto__(i)
+        
+        # Dibujar barra central
+        barra_x = self.__tablero_x__ + 6 * self.__ancho_punto__
+        pygame.draw.rect(
+            self.__pantalla__,
+            self.color_barra,
+            (barra_x, self.__tablero_y__, 
+             2 * self.__ancho_punto__, self.__tablero_alto__)
+        )
+        
+        # Dibujar bordes
+        pygame.draw.rect(
+            self.__pantalla__,
+            self.color_texto,
+            (self.__tablero_x__, self.__tablero_y__, 
+             self.__tablero_ancho__, self.__tablero_alto__),
+            3
+        )
