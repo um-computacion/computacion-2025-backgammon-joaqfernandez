@@ -11,31 +11,31 @@ class PygameUI:
     # Colores
     color_fondo = (34, 49, 63)
     color_tablero = (101, 67, 33)
-    COLOR_PUNTO_CLARO = (222, 184, 135)
-    COLOR_PUNTO_OSCURO = (139, 90, 43)
-    COLOR_BARRA = (70, 50, 30)
-    COLOR_FICHA_BLANCA = (240, 240, 240)
-    COLOR_FICHA_NEGRA = (30, 30, 30)
-    COLOR_BORDE_FICHA = (180, 180, 180)
-    COLOR_SELECCION = (255, 215, 0)
-    COLOR_MOVIMIENTO_POSIBLE = (100, 255, 100)
-    COLOR_TEXTO = (255, 255, 255)
-    COLOR_BOTON = (52, 152, 219)
-    COLOR_BOTON_HOVER = (41, 128, 185)
-    COLOR_MENSAJE_ERROR = (231, 76, 60)
-    COLOR_MENSAJE_EXITO = (46, 204, 113)
+    color_punto_claro = (222, 184, 135)
+    color_punto_oscuro = (139, 90, 43)
+    color_barra = (70, 50, 30)
+    color_ficha_blanca = (240, 240, 240)
+    color_ficha_negra = (30, 30, 30)
+    color_borde_ficha = (180, 180, 180)
+    color_seleccion = (255, 215, 0)
+    color_movimiento_posible = (100, 255, 100)
+    color_texto = (255, 255, 255)
+    color_boton = (52, 152, 219)
+    color_boton_hover = (41, 128, 185)
+    color_mensaje_error = (231, 76, 60)
+    color_mensaje_exito = (46, 204, 113)
     
     # Dimensiones
-    ANCHO_VENTANA = 1200
-    ALTO_VENTANA = 800
-    MARGEN = 50
-    RADIO_FICHA = 20
+    ancho_ventana = 1200
+    alto_ventana = 800
+    marge = 50
+    radio_ficha = 20
     
     def __init__(self):
         pygame.init()
         
-        self.__ancho__ = self.ANCHO_VENTANA
-        self.__alto__ = self.ALTO_VENTANA
+        self.__ancho__ = self.ancho_ventana
+        self.__alto__ = self.alto_ventana
         self.__pantalla__ = pygame.display.set_mode((self.__ancho__, self.__alto__))
         pygame.display.set_caption("Backgammon")
         
