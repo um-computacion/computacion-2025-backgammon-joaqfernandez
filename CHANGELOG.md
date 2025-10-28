@@ -159,3 +159,33 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
   - Manejo de excepciones con mensajes descriptivos.
 - Documentación en docstrings estilo PEP 257 para todas las funciones y clases.
 
+## [0.26.0] - 2025-10-28 12:48
+### Added
+- Método `iniciar()` que implementa el **bucle principal del juego**, permitiendo:
+  - Iniciar una nueva partida de Backgammon.
+  - Configurar los nombres de los jugadores antes de comenzar.
+  - Ejecutar el flujo completo de juego hasta que haya un ganador o el jugador decida salir.
+- Método `jugar_de_nuevo()` que permite **reiniciar el juego** tras finalizar una partida.
+  - Acepta respuestas afirmativas (`s`, `si`, `sí`, `yes`, `y`)
+- Mensaje de despedida al salir del programa.
+
+## [0.27.0] - 2025-10-28 13:20
+### Added
+- **Interfaz gráfica (GUI) con Pygame**: Proporciona una experiencia visual e interactiva del Backgammon.
+- **Inicialización de ventana y contexto gráfico**:
+  - Tamaño por defecto `1200x800`, título de ventana “Backgammon”.
+  - Reloj (`pygame.Clock`) para control de FPS.
+- **Sistema de estados de la UI**:
+  - Atributo `__estado__` con valores `menu`, `juego`, `victoria`.
+  - Variables de apoyo: `__mensaje__` y `__tiempo_mensaje__` para mostrar feedback temporal.
+- **Tipografía y estilos**:
+  - Fuentes preconfiguradas para título, texto y texto pequeño.
+- **Paleta y constantes visuales**:
+  - Colores para fondo, tablero, puntos claros/oscursos, barra, fichas (blancas/negras), bordes, selección y movimientos posibles.
+  - Colores para mensajes de error/éxito y botones (normal/hover).
+  - Dimensiones: márgenes y radio de ficha configurables.
+- **Selección y asistencia al movimiento**:
+  - `__punto_seleccionado__` y `__movimientos_posibles__` para interacción guiada del usuario.
+- **Integración con lógica de juego**:
+  - Importación de `BackgammonGame` desde `src/juego.py`.
+  - Preparativos para cálculo de layout del tablero vía `__calcular_dimensiones_tablero__()`.
