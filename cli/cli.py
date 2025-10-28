@@ -205,3 +205,8 @@ class CLI:
         print("=" * 60)
         print(f"\n¡¡{ganador.nombre} ({ganador.color}) ha ganado el juego!!\n")
         print("=" * 60 + "\n")
+
+
+    def jugar_de_nuevo(self) -> bool:
+        respuesta = input("\n¿Quieres jugar de nuevo? (s/n): ").strip().lower()
+        return respuesta in ['s', 'si', 'sí', 'yes', 'y']
