@@ -210,3 +210,40 @@ class CLI:
     def jugar_de_nuevo(self) -> bool:
         respuesta = input("\n¿Quieres jugar de nuevo? (s/n): ").strip().lower()
         return respuesta in ['s', 'si', 'sí', 'yes', 'y']
+
+    def iniciar(self):
+        self.__ejecutando__ = True
+        
+        while self.__ejecutando__:
+            self.limpiar_pantalla()
+            self.mostrar_bienvenida()
+            
+            # Solicitar nombres
+            nombre1, nombre2 = self.solicitar_nombres()
+            
+            # Crear juego
+            self.__juego__ = BackgammonGame(nombre1, nombre2)
+            self.__juego__.iniciar_juego()
+            
+            # Mostrar comandos
+            self.mostrar_comandos()
+            
+            # Bucle principal del juego
+            while self.__ejecutando__ and not self.__juego__.esta_terminado():
+                self.jugar_turno()
+            
+            # Si terminó el juego (no se salió)
+            if self.__juego__.esta_terminado():
+                if not self.jugar_de_nuevo():
+                    self.__ejecutando__ = False
+        
+        print("\n¡Gracias por jugar Backgammon!\n")
+
+
+def main():
+    cli = CLI()
+    cli.iniciar()
+
+
+if __name__ == "__main__":
+    main()
