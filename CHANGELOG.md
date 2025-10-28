@@ -159,3 +159,12 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
   - Manejo de excepciones con mensajes descriptivos.
 - Documentación en docstrings estilo PEP 257 para todas las funciones y clases.
 
+## [0.26.0] - 2025-10-28 13:14
+### Added
+- Método `iniciar()` que implementa el **bucle principal del juego**, permitiendo:
+  - Iniciar una nueva partida de Backgammon.
+  - Configurar los nombres de los jugadores antes de comenzar.
+  - Ejecutar el flujo completo de juego hasta que haya un ganador o el jugador decida salir.
+- Método `jugar_de_nuevo()` que permite **reiniciar el juego** tras finalizar una partida.
+  - Acepta respuestas afirmativas (`s`, `si`, `sí`, `yes`, `y`)
+- Mensaje de despedida al salir del programa.
