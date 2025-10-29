@@ -155,3 +155,19 @@ class PygameUI:
         texto = self.__fuente_pequeña__.render(str(numero_punto), True, self.COLOR_TEXTO)
         texto_rect = texto.get_rect(center=(x + self.__ancho_punto__ // 2, y_base + (10 if fila == 0 else -10)))
         self.__pantalla__.blit(texto, texto_rect)
+
+    def dibujar_fichas(self):
+        if not self.__juego__:
+            return
+        
+        puntos = self.__juego__.tablero.obtener_puntos()
+        
+        for i, punto in enumerate(puntos):
+            if punto["cantidad"] > 0:
+                self.__dibujar_fichas_en_punto__(i, punto["color"], punto["cantidad"])
+        
+        # Dibujar fichas en la barra
+        self.__dibujar_fichas_barra__()
+        
+        # Dibujar fichas fuera
+        self.__dibujar_fichas_fuera__()
