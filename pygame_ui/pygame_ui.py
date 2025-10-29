@@ -263,4 +263,19 @@ class PygameUI:
         texto = self.__fuente_pequeña__.render(f"Negro fuera: {fichas_negro}", True, self.color_texto)
         self.__pantalla__.blit(texto, (fuera_x, self.__tablero_y__ + 50))
 
-    
+    def dibujar_info_turno(self):
+        if not self.__juego__ or not self.__juego__.turno_actual:
+            return
+        
+        estado = self.__juego__.obtener_estado_juego()
+        
+        # Nombre del jugador y color
+        texto = f"Turno: {estado['turno']} ({estado['color_turno']})"
+        superficie_texto = self.__fuente_texto__.render(texto, True, self.color_texto)
+        self.__pantalla__.blit(superficie_texto, (self.marge, 20))
+        
+        # Dados disponibles
+        if estado['dados_disponibles']:
+            dados_texto = f"Dados: {estado['dados_disponibles']}"
+            superficie_dados = self.__fuente_texto__.render(dados_texto, True, self.color_texto)
+            self.__pantalla__.blit(superficie_dados, (self.MARGEN, 60))
