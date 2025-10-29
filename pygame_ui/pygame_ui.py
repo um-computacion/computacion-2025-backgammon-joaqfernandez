@@ -279,3 +279,23 @@ class PygameUI:
             dados_texto = f"Dados: {estado['dados_disponibles']}"
             superficie_dados = self.__fuente_texto__.render(dados_texto, True, self.color_texto)
             self.__pantalla__.blit(superficie_dados, (self.marge, 60))
+
+    def dibujar_mensaje(self):
+        if self.__mensaje__ and pygame.time.get_ticks() - self.__tiempo_mensaje__ < 3000:
+            color = self.color_mensaje_exito if "✓" in self.__mensaje__ else self.color_mensaje_error
+            superficie = self.__fuente_texto__.render(self.__mensaje__, True, color)
+            rect = superficie.get_rect(center=(self.__ancho__ // 2, self.__alto__ - 50))
+            
+            # Fondo semi-transparente
+            fondo = pygame.Surface((rect.width + 20, rect.height + 10))
+            fondo.fill(self.color_fondo)
+            fondo.set_alpha(200)
+            self.__pantalla__.blit(fondo, (rect.x - 10, rect.y - 5))
+            
+            self.__pantalla__.blit(superficie, rect)
+    
+    def mostrar_mensaje(self, mensaje: str):
+        self.__mensaje__ = mensaje
+        self.__tiempo_mensaje__ = pygame.time.get_ticks()
+
+        
