@@ -171,3 +171,45 @@ class PygameUI:
         
         # Dibujar fichas fuera
         self.__dibujar_fichas_fuera__()
+
+    def __dibujar_fichas_en_punto__(self, numero_punto: int, color: str, cantidad: int):
+        # Determinar posición del punto
+        if numero_punto < 12:
+            fila = 1
+            columna = 11 - numero_punto
+        else:
+            fila = 0
+            columna = numero_punto - 12
+        
+        if columna >= 6:
+            columna += 2
+        
+        x = self.__tablero_x__ + columna * self.__ancho_punto__ + self.__ancho_punto__ // 2
+        
+        if fila == 0:
+            y_inicio = self.__tablero_y__ + 20
+            direccion = 1
+        else:
+            y_inicio = self.__tablero_y__ + self.__tablero_alto__ - 20
+            direccion = -1
+        
+        # Color de la ficha
+        color_ficha = self.color_ficha_blanca if color == "BLANCO" else self.color_ficha_negra
+        
+        # Dibujar fichas (máximo 5 visibles, luego mostrar número)
+        fichas_visibles = min(cantidad, 5)
+        for i in range(fichas_visibles):
+            y = y_inicio + direccion * i * (self.radio_ficha * 2 + 2)
+            pygame.draw.circle(self.__pantalla__, color_ficha, (x, y), self.radio_ficha)
+            pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (x, y), self.radio_ficha, 2)
+        
+        # Si hay más de 5 fichas, mostrar el número
+        if cantidad > 5:
+            y = y_inicio + direccion * 4 * (self.radio_ficha * 2 + 2)
+            texto = self.__fuente_pequeña__.render(str(cantidad), True, self.color_texto)
+            texto_rect = texto.get_rect(center=(x, y))
+            
+            # Fondo para el número
+            pygame.draw.circle(self.__pantalla__, color_ficha, (x, y), self.radio_ficha)
+            pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (x, y), self.radio_ficha, 2)
+            self.__pantalla__.blit(texto, texto_rect)
