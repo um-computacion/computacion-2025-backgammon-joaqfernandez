@@ -278,4 +278,4 @@ class PygameUI:
         if estado['dados_disponibles']:
             dados_texto = f"Dados: {estado['dados_disponibles']}"
             superficie_dados = self.__fuente_texto__.render(dados_texto, True, self.color_texto)
-            self.__pantalla__.blit(superficie_dados, (self.MARGEN, 60))
+            self.__pantalla__.blit(superficie_dados, (self.marge, 60))
