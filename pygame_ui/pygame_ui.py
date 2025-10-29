@@ -213,3 +213,37 @@ class PygameUI:
             pygame.draw.circle(self.__pantalla__, color_ficha, (x, y), self.radio_ficha)
             pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (x, y), self.radio_ficha, 2)
             self.__pantalla__.blit(texto, texto_rect)
+    
+    def __dibujar_fichas_barra__(self):
+        if not self.__juego__:
+            return
+        
+        barra_x = self.__tablero_x__ + 6 * self.__ancho_punto__ + self.__ancho_punto__
+        
+        # Fichas blancas en la barra
+        fichas_blanco = self.__juego__.tablero.fichas_en_barra("BLANCO")
+        if fichas_blanco > 0:
+            y_base = self.__tablero_y__ + self.__tablero_alto__ // 2 + 50
+            for i in range(min(fichas_blanco, 5)):
+                y = y_base + i * (self.radio_ficha * 2 + 2)
+                pygame.draw.circle(self.__pantalla__, self.color_ficha_blanca, (barra_x, y), self.radio_ficha)
+                pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (barra_x, y), self.radio_ficha, 2)
+            
+            if fichas_blanco > 5:
+                texto = self.__fuente_pequeña__.render(str(fichas_blanco), True, self.COLOR_TEXTO)
+                self.__pantalla__.blit(texto, (barra_x - 10, y_base - 30))
+        
+        # Fichas negras en la barra
+        fichas_negro = self.__juego__.tablero.fichas_en_barra("NEGRO")
+        if fichas_negro > 0:
+            y_base = self.__tablero_y__ + self.__tablero_alto__ // 2 - 50
+            for i in range(min(fichas_negro, 5)):
+                y = y_base - i * (self.radio_ficha * 2 + 2)
+                pygame.draw.circle(self.__pantalla__, self.color_ficha_negra, (barra_x, y), self.radio_ficha)
+                pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (barra_x, y), self.radio_ficha, 2)
+            
+            if fichas_negro > 5:
+                texto = self.__fuente_pequeña__.render(str(fichas_negro), True, self.COLOR_TEXTO)
+                self.__pantalla__.blit(texto, (barra_x - 10, y_base + 30))
+
+    
