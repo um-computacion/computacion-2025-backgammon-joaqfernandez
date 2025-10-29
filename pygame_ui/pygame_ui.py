@@ -230,7 +230,7 @@ class PygameUI:
                 pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (barra_x, y), self.radio_ficha, 2)
             
             if fichas_blanco > 5:
-                texto = self.__fuente_pequeña__.render(str(fichas_blanco), True, self.COLOR_TEXTO)
+                texto = self.__fuente_pequeña__.render(str(fichas_blanco), True, self.color_texto)
                 self.__pantalla__.blit(texto, (barra_x - 10, y_base - 30))
         
         # Fichas negras en la barra
@@ -243,7 +243,24 @@ class PygameUI:
                 pygame.draw.circle(self.__pantalla__, self.color_borde_ficha, (barra_x, y), self.radio_ficha, 2)
             
             if fichas_negro > 5:
-                texto = self.__fuente_pequeña__.render(str(fichas_negro), True, self.COLOR_TEXTO)
+                texto = self.__fuente_pequeña__.render(str(fichas_negro), True, self.color_texto)
                 self.__pantalla__.blit(texto, (barra_x - 10, y_base + 30))
+
+    def __dibujar_fichas_fuera__(self):
+        if not self.__juego__:
+            return
+        
+        # Área de fichas fuera (derecha del tablero)
+        fuera_x = self.__tablero_x__ + self.__tablero_ancho__ + 20
+        
+        # Fichas blancas fuera
+        fichas_blanco = self.__juego__.tablero.fichas_fuera("BLANCO")
+        texto = self.__fuente_pequeña__.render(f"Blanco fuera: {fichas_blanco}", True, self.color_texto)
+        self.__pantalla__.blit(texto, (fuera_x, self.__tablero_y__ + self.__tablero_alto__ - 50))
+        
+        # Fichas negras fuera
+        fichas_negro = self.__juego__.tablero.fichas_fuera("NEGRO")
+        texto = self.__fuente_pequeña__.render(f"Negro fuera: {fichas_negro}", True, self.color_texto)
+        self.__pantalla__.blit(texto, (fuera_x, self.__tablero_y__ + 50))
 
     
