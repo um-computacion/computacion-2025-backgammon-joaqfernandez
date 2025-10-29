@@ -57,3 +57,101 @@ class PygameUI:
         
         # Calcular dimensiones del tablero
         self.__calcular_dimensiones_tablero__()
+
+    def __calcular_dimensiones_tablero__(self):
+        self.__tablero_x__ = self.marge
+        self.__tablero_y__ = self.marge + 100
+        self.__tablero_ancho__ = self.__ancho__ - 2 * self.marge
+        self.__tablero_alto__ = self.__alto__ - 2 * self.marge - 150
+        
+        # Ancho de cada punto (triángulo)
+        self.__ancho_punto__ = self.__tablero_ancho__ // 14  # 12 puntos + 2 para la barra
+        self.__alto_punto__ = self.__tablero_alto__ // 2 - 20
+    
+    def dibujar_fondo(self):
+        self.__pantalla__.fill(self.color_fondo)
+
+    def dibujar_tablero(self):
+        # Fondo del tablero
+        pygame.draw.rect(
+            self.__pantalla__,
+            self.color_tablero,
+            (self.__tablero_x__, self.__tablero_y__, 
+             self.__tablero_ancho__, self.__tablero_alto__)
+        )
+        
+        # Dibujar puntos (triángulos)
+        for i in range(24):
+            self.__dibujar_punto__(i)
+        
+        # Dibujar barra central
+        barra_x = self.__tablero_x__ + 6 * self.__ancho_punto__
+        pygame.draw.rect(
+            self.__pantalla__,
+            self.color_barra,
+            (barra_x, self.__tablero_y__, 
+             2 * self.__ancho_punto__, self.__tablero_alto__)
+        )
+        
+        # Dibujar bordes
+        pygame.draw.rect(
+            self.__pantalla__,
+            self.color_texto,
+            (self.__tablero_x__, self.__tablero_y__, 
+             self.__tablero_ancho__, self.__tablero_alto__),
+            3
+        )
+
+    def __dibujar_punto__(self, numero_punto: int):
+        # Determinar posición
+        if numero_punto < 12:
+            # Parte inferior
+            fila = 1
+            columna = 11 - numero_punto
+        else:
+            # Parte superior
+            fila = 0
+            columna = numero_punto - 12
+        
+        # Ajustar por la barra central
+        if columna >= 6:
+            columna += 2
+        
+        # Calcular posición x
+        x = self.__tablero_x__ + columna * self.__ancho_punto__
+        
+        # Calcular posición y y dirección del triángulo
+        if fila == 0:
+            # Triángulo hacia abajo (parte superior)
+            y_base = self.__tablero_y__
+            y_punta = y_base + self.__alto_punto__
+        else:
+            # Triángulo hacia arriba (parte inferior)
+            y_base = self.__tablero_y__ + self.__tablero_alto__
+            y_punta = y_base - self.__alto_punto__
+        
+        # Color alternado
+        color = self.COLOR_PUNTO_CLARO if numero_punto % 2 == 0 else self.COLOR_PUNTO_OSCURO
+        
+        # Resaltar si está seleccionado
+        if numero_punto == self.__punto_seleccionado__:
+            color = self.COLOR_SELECCION
+        
+        # Resaltar si es movimiento posible
+        if any(destino == numero_punto for _, destino, _ in self.__movimientos_posibles__):
+            # Mezclar con color de movimiento posible
+            color = tuple((c + g) // 2 for c, g in zip(color, self.COLOR_MOVIMIENTO_POSIBLE))
+        
+        # Dibujar triángulo
+        puntos = [
+            (x + self.__ancho_punto__ // 2, y_punta),
+            (x, y_base),
+            (x + self.__ancho_punto__, y_base)
+        ]
+        pygame.draw.polygon(self.__pantalla__, color, puntos)
+        pygame.draw.polygon(self.__pantalla__, self.COLOR_TEXTO, puntos, 1)
+        
+        # Dibujar número del punto
+        texto = self.__fuente_pequeña__.render(str(numero_punto), True, self.COLOR_TEXTO)
+        texto_rect = texto.get_rect(center=(x + self.__ancho_punto__ // 2, y_base + (10 if fila == 0 else -10)))
+        self.__pantalla__.blit(texto, texto_rect)
