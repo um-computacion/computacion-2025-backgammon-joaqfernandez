@@ -477,4 +477,46 @@ class PygameUI:
         
         return boton_rect
     
+    def iniciar_juego_nuevo(self):
+        # Por ahora nombres fijos, pero podrías agregar input
+        self.__juego__ = BackgammonGame("Jugador 1", "Jugador 2")
+        self.__juego__.iniciar_juego()
+        self.__juego__.tirar_dados()
+        self.__estado__ = "juego"
+        self.__punto_seleccionado__ = None
+        self.__movimientos_posibles__ = []
+    
+    def manejar_eventos(self):
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                self.__ejecutando__ = False
+            
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                if evento.button == 1:  # Click izquierdo
+                    if self.__estado__ == "menu":
+                        boton_rect = self.dibujar_menu()
+                        if boton_rect.collidepoint(evento.pos):
+                            self.iniciar_juego_nuevo()
+                    
+                    elif self.__estado__ == "juego":
+                        self.manejar_click(evento.pos)
+                    
+                    elif self.__estado__ == "victoria":
+                        boton_rect = self.dibujar_pantalla_victoria()
+                        if boton_rect.collidepoint(evento.pos):
+                            self.__estado__ = "menu"
+            
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_ESCAPE:
+                    if self.__estado__ == "juego":
+                        self.__estado__ = "menu"
+                    else:
+                        self.__ejecutando__ = False
+                
+                elif evento.key == pygame.K_SPACE and self.__estado__ == "juego":
+                    # Pasar turno (si no puede mover)
+                    if not self.__juego__.puede_realizar_movimiento():
+                        self.__juego__.cambiar_turno()
+                        self.__juego__.tirar_dados()
+                        self.mostrar_mensaje("Turno pasado")
     
