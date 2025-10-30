@@ -298,4 +298,103 @@ class PygameUI:
         self.__mensaje__ = mensaje
         self.__tiempo_mensaje__ = pygame.time.get_ticks()
 
+    def obtener_punto_desde_posicion(self, pos: tuple) -> int:
+        x, y = pos
         
+        # Verificar si está dentro del tablero
+        if not (self.__tablero_x__ <= x <= self.__tablero_x__ + self.__tablero_ancho__ and
+                self.__tablero_y__ <= y <= self.__tablero_y__ + self.__tablero_alto__):
+            return -1
+        
+        # Calcular columna
+        x_rel = x - self.__tablero_x__
+        columna = x_rel // self.__ancho_punto__
+        
+        # Ajustar por la barra
+        if columna >= 6 and columna < 8:
+            return -1  # Click en la barra
+        if columna >= 8:
+            columna -= 2
+        
+        # Determinar si es parte superior o inferior
+        y_rel = y - self.__tablero_y__
+        if y_rel < self.__tablero_alto__ // 2:
+            # Parte superior (puntos 12-23)
+            numero_punto = columna + 12
+        else:
+            # Parte inferior (puntos 0-11)
+            numero_punto = 11 - columna
+        
+        return numero_punto if 0 <= numero_punto < 24 else -1
+    
+    def manejar_click(self, pos: tuple):
+        if not self.__juego__ or self.__estado__ != "juego":
+            return
+        
+        punto_clickeado = self.obtener_punto_desde_posicion(pos)
+        
+        if punto_clickeado == -1:
+            # Click fuera del tablero, deseleccionar
+            self.__punto_seleccionado__ = None
+            self.__movimientos_posibles__ = []
+            return
+        
+        # Si no hay punto seleccionado, seleccionar este
+        if self.__punto_seleccionado__ is None:
+            color_actual = self.__juego__.turno_actual.color
+            punto = self.__juego__.tablero.obtener_puntos()[punto_clickeado]
+            
+            if punto["color"] == color_actual and punto["cantidad"] > 0:
+                self.__punto_seleccionado__ = punto_clickeado
+                # Obtener movimientos posibles desde este punto
+                todos_movimientos = self.__juego__.obtener_movimientos_legales()
+                self.__movimientos_posibles__ = [
+                    m for m in todos_movimientos if m[0] == punto_clickeado
+                ]
+                self.mostrar_mensaje(f"Punto {punto_clickeado} seleccionado")
+        else:
+            # Ya hay un punto seleccionado, intentar mover
+            # Buscar si este destino es válido
+            movimiento_valido = None
+            for origen, destino, dado in self.__movimientos_posibles__:
+                if destino == punto_clickeado:
+                    movimiento_valido = (origen, destino, dado)
+                    break
+            
+            if movimiento_valido:
+                origen, destino, dado = movimiento_valido
+                try:
+                    self.__juego__.realizar_movimiento(origen, dado)
+                    self.mostrar_mensaje(f"✓ Movimiento realizado: {origen} → {destino}")
+                    
+                    # Verificar victoria
+                    if self.__juego__.verificar_victoria():
+                        self.__estado__ = "victoria"
+                    
+                    # Deseleccionar
+                    self.__punto_seleccionado__ = None
+                    self.__movimientos_posibles__ = []
+                    
+                    # Si no quedan dados o no puede mover, cambiar turno
+                    if not self.__juego__.tiene_dados_disponibles() or \
+                       not self.__juego__.puede_realizar_movimiento():
+                        self.__juego__.cambiar_turno()
+                        if self.__juego__.tiene_dados_disponibles() == False:
+                            self.__juego__.tirar_dados()
+                
+                except Exception as e:
+                    self.mostrar_mensaje(f"✗ Error: {e}")
+            else:
+                # Cambiar selección a este punto si es del jugador actual
+                color_actual = self.__juego__.turno_actual.color
+                punto = self.__juego__.tablero.obtener_puntos()[punto_clickeado]
+                
+                if punto["color"] == color_actual and punto["cantidad"] > 0:
+                    self.__punto_seleccionado__ = punto_clickeado
+                    todos_movimientos = self.__juego__.obtener_movimientos_legales()
+                    self.__movimientos_posibles__ = [
+                        m for m in todos_movimientos if m[0] == punto_clickeado
+                    ]
+                else:
+                    self.mostrar_mensaje("✗ Movimiento inválido")
+    
