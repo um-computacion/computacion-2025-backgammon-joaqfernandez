@@ -520,3 +520,37 @@ class PygameUI:
                         self.__juego__.tirar_dados()
                         self.mostrar_mensaje("Turno pasado")
     
+    def dibujar(self):
+        if self.__estado__ == "menu":
+            self.dibujar_menu()
+        
+        elif self.__estado__ == "juego":
+            self.dibujar_fondo()
+            self.dibujar_tablero()
+            self.dibujar_fichas()
+            self.dibujar_info_turno()
+            self.dibujar_mensaje()
+        
+        elif self.__estado__ == "victoria":
+            self.dibujar_pantalla_victoria()
+        
+        pygame.display.flip()
+    
+    def ejecutar(self):
+        while self.__ejecutando__:
+            self.manejar_eventos()
+            self.actualizar()
+            self.dibujar()
+            self.__reloj__.tick(60)  # 60 FPS
+        
+        pygame.quit()
+        sys.exit()
+
+
+def main():
+    ui = PygameUI()
+    ui.ejecutar()
+
+
+if __name__ == "__main__":
+    main()
