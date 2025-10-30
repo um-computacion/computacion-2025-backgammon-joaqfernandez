@@ -487,12 +487,13 @@ class PygameUI:
         self.__movimientos_posibles__ = []
     
     def manejar_eventos(self):
+        """Maneja los eventos de Pygame."""
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 self.__ejecutando__ = False
             
             elif evento.type == pygame.MOUSEBUTTONDOWN:
-                if evento.button == 1:  # Click izquierdo
+                if evento.button == 1:
                     if self.__estado__ == "menu":
                         boton_rect = self.dibujar_menu()
                         if boton_rect.collidepoint(evento.pos):
@@ -514,7 +515,6 @@ class PygameUI:
                         self.__ejecutando__ = False
                 
                 elif evento.key == pygame.K_SPACE and self.__estado__ == "juego":
-                    # Pasar turno (si no puede mover)
                     if not self.__juego__.puede_realizar_movimiento():
                         self.__juego__.cambiar_turno()
                         self.__juego__.tirar_dados()
@@ -539,7 +539,6 @@ class PygameUI:
     def ejecutar(self):
         while self.__ejecutando__:
             self.manejar_eventos()
-            self.actualizar()
             self.dibujar()
             self.__reloj__.tick(60)  # 60 FPS
         
