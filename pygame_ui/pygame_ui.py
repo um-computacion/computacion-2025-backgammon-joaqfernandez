@@ -398,3 +398,45 @@ class PygameUI:
                 else:
                     self.mostrar_mensaje("✗ Movimiento inválido")
     
+    def dibujar_menu(self):
+        self.dibujar_fondo()
+        
+        # Título
+        titulo = self.__fuente_titulo__.render("BACKGAMMON", True, self.color_texto)
+        titulo_rect = titulo.get_rect(center=(self.__ancho__ // 2, 150))
+        self.__pantalla__.blit(titulo, titulo_rect)
+        
+        # Botón Jugar
+        boton_rect = pygame.Rect(
+            self.__ancho__ // 2 - 100,
+            self.__alto__ // 2 - 50,
+            200, 60
+        )
+        
+        # Verificar hover
+        mouse_pos = pygame.mouse.get_pos()
+        color_boton = self.color_boton_hover if boton_rect.collidepoint(mouse_pos) else self.color_boton
+        
+        pygame.draw.rect(self.__pantalla__, color_boton, boton_rect, border_radius=10)
+        pygame.draw.rect(self.__pantalla__, self.color_texto, boton_rect, 2, border_radius=10)
+        
+        texto_boton = self.__fuente_texto__.render("JUGAR", True, self.color_texto)
+        texto_rect = texto_boton.get_rect(center=boton_rect.center)
+        self.__pantalla__.blit(texto_boton, texto_rect)
+        
+        # Instrucciones
+        instrucciones = [
+            "Click en una ficha tuya para seleccionarla",
+            "Click en un punto válido para mover",
+            "El juego tira los dados automáticamente"
+        ]
+        
+        y = self.__alto__ // 2 + 100
+        for texto in instrucciones:
+            superficie = self.__fuente_pequeña__.render(texto, True, self.color_texto)
+            rect = superficie.get_rect(center=(self.__ancho__ // 2, y))
+            self.__pantalla__.blit(superficie, rect)
+            y += 30
+        
+        return boton_rect
+    
