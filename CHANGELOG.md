@@ -189,3 +189,33 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - **Integración con lógica de juego**:
   - Importación de `BackgammonGame` desde `src/juego.py`.
   - Preparativos para cálculo de layout del tablero vía `__calcular_dimensiones_tablero__()`.
+
+## [0.28.0] - 2025-10-30 20:02
+### Added
+- **Interfaz gráfica completa con Pygame** (`PygameUI`) con bucle principal `ejecutar()`.
+- **Cálculo de layout del tablero**: `__calcular_dimensiones_tablero__()` define áreas y medidas (tablero, barra, puntos, radio de fichas).
+- **Renderizado del tablero y puntos**:
+  - `dibujar_tablero()` y `__dibujar_punto__()` con triángulos alternados, barra central y bordes.
+  - Numerado de puntos (0–23) en cada triángulo.
+- **Dibujo de fichas**:
+  - `dibujar_fichas()` + `__dibujar_fichas_en_punto__()` (apila hasta 5 fichas, muestra contador si >5).
+  - `__dibujar_fichas_barra__()` y `__dibujar_fichas_fuera__()` para barra y fichas bear-off.
+- **Interacción por mouse**:
+  - `obtener_punto_desde_posicion()` traduce clics a índices de punto, respetando la barra.
+  - `manejar_click()` con selección de punto, listado de movimientos legales y ejecución de jugadas.
+  - Resaltado visual de **punto seleccionado** y **destinos válidos**.
+- **Estados de UI**: `__estado__ ∈ {menu, juego, victoria}` con pantallas dedicadas:
+  - `dibujar_menu()` con botón “JUGAR” (hover).
+  - `dibujar_pantalla_victoria()` con overlay semi-transparente y botón “MENÚ”.
+- **Mensajería temporal**:
+  - `mostrar_mensaje()` + `dibujar_mensaje()` para feedback (éxito/error) con timeout y fondo translúcido.
+- **HUD del turno**:
+  - `dibujar_info_turno()` muestra jugador actual, color y dados disponibles.
+- **Inicialización de partida**:
+  - `iniciar_juego_nuevo()` crea `BackgammonGame`, inicia y tira dados automáticamente.
+- **Gestión de eventos**:
+  - `manejar_eventos()` soporta `ESC` (volver al menú/salir) y `SPACE` (pasar turno si no hay movimientos).
+- **Ritmo de actualización**:
+  - `__reloj__` a 60 FPS; `actualizar()` preparado para animaciones futuras.
+- **Integración**:
+  - `main()` ejecutable directo del módulo.
