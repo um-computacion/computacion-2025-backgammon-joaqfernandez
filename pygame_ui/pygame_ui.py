@@ -440,3 +440,41 @@ class PygameUI:
         
         return boton_rect
     
+    def dibujar_pantalla_victoria(self):
+        self.dibujar_fondo()
+        self.dibujar_tablero()
+        self.dibujar_fichas()
+        
+        # Overlay semi-transparente
+        overlay = pygame.Surface((self.__ancho__, self.__alto__))
+        overlay.fill(self.color_fondo)
+        overlay.set_alpha(200)
+        self.__pantalla__.blit(overlay, (0, 0))
+        
+        # Mensaje de victoria
+        if self.__juego__ and self.__juego__.ganador:
+            texto_victoria = f"¡{self.__juego__.ganador.nombre} ha ganado!"
+            superficie = self.__fuente_titulo__.render(texto_victoria, True, self.color_mensaje_exito)
+            rect = superficie.get_rect(center=(self.__ancho__ // 2, self.__alto__ // 2 - 50))
+            self.__pantalla__.blit(superficie, rect)
+        
+        # Botón volver al menú
+        boton_rect = pygame.Rect(
+            self.__ancho__ // 2 - 100,
+            self.__alto__ // 2 + 50,
+            200, 60
+        )
+        
+        mouse_pos = pygame.mouse.get_pos()
+        color_boton = self.color_boton_hover if boton_rect.collidepoint(mouse_pos) else self.color_boton
+        
+        pygame.draw.rect(self.__pantalla__, color_boton, boton_rect, border_radius=10)
+        pygame.draw.rect(self.__pantalla__, self.color_texto, boton_rect, 2, border_radius=10)
+        
+        texto_boton = self.__fuente_texto__.render("MENÚ", True, self.color_texto)
+        texto_rect = texto_boton.get_rect(center=boton_rect.center)
+        self.__pantalla__.blit(texto_boton, texto_rect)
+        
+        return boton_rect
+    
+    
