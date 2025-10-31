@@ -242,7 +242,6 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 ### Cambiado
 - Pequeños ajustes de import path para `src/`.
 
-
 ## [0.30.0] - 2025-10-31 19:45
 ### Added
 - Tests de `Tablero` (unittest) cubriendo:
