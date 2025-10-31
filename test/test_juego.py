@@ -122,5 +122,33 @@ class TestBackgammonGameDados(unittest.TestCase):
         self.assertEqual(len(juego.dados_disponibles), dados_iniciales - 1)
     
 
+    def test_usar_dado_no_disponible_lanza_error(self):
+        juego = BackgammonGame("Alice", "Bob")
+        
+        with self.assertRaises(ValueError) as context:
+            juego.usar_dado(7)
+        
+        self.assertIn("no está disponible", str(context.exception))
+    
+    def test_tiene_dados_disponibles_con_dados(self):
+        juego = BackgammonGame("Alice", "Bob")
+        
+        self.assertFalse(juego.tiene_dados_disponibles())
+        
+        juego.tirar_dados()
+        self.assertTrue(juego.tiene_dados_disponibles())
+    
+    def test_usar_todos_los_dados(self):
+        juego = BackgammonGame("Alice", "Bob")
+        juego.tirar_dados()
+        
+        # Usar todos los dados
+        while juego.tiene_dados_disponibles():
+            juego.usar_dado(juego.dados_disponibles[0])
+        
+        self.assertFalse(juego.tiene_dados_disponibles())
+        self.assertEqual(len(juego.dados_disponibles), 0)
+
+
 if __name__ == "__main__":
     unittest.main()
