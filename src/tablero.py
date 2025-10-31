@@ -102,7 +102,6 @@ class Tablero:
         destino = self.punto_entrada_desde_barra(color, dado)
         punto = self.__puntos__[destino]
 
-
         if punto["cantidad"] == 1 and punto["color"] != color:
             rival = ficha1 if color == ficha2 else ficha2
             self.__barra__[rival] += 1
