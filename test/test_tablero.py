@@ -22,6 +22,7 @@ class testTablero(unittest.TestCase):
     def test_tablero_inicial_tiene_fichas_correctas(self):
         tablero = Tablero()
         puntos = tablero.obtener_puntos()
+        p = tablero.obtener_puntos() 
         #Todas las fichas
         self.assertEqual(len(p), 24)
 
@@ -95,7 +96,50 @@ class testTablero(unittest.TestCase):
         self.assertFalse(tablero.movimiento_regular(ficha1, 24)) 
 
 
-
+    def test_blanco_puede_mover_desde_12_con_dado4(self):
+        tablero = Tablero()
+        # Punto 12 tiene 5 fichas blancas, con dado 4 va a punto 8 (vacío)
+        self.assertTrue(tablero.hay_ficha_o_no(ficha1, 12, 4))
+    
+    def test_negro_puede_mover_desde_0_con_dado3(self):
+        tablero = Tablero()
+        # Punto 0 tiene 2 fichas negras, con dado 3 va a punto 3 (vacío)
+        self.assertTrue(tablero.hay_ficha_o_no(ficha2, 0, 3))
+    
+    def test_no_puede_mover_desde_punto_vacio(self):
+        tablero = Tablero()
+        # Punto 1 está vacío
+        self.assertFalse(tablero.hay_ficha_o_no(ficha1, 1, 3))
+    
+    def test_no_puede_mover_ficha_enemiga(self):
+        tablero = Tablero()
+        # Punto 5 tiene fichas blancas, negro no puede moverlas
+        self.assertFalse(tablero.hay_ficha_o_no(ficha2, 5, 3))
+    
+    def test_aplicar_movimiento_reduce_cantidad_origen(self):
+        tablero = Tablero()
+        cantidad_inicial = tablero._Tablero__puntos__[12]["cantidad"]
+        
+        tablero.aplicar_hay_ficha(ficha1, 12, 4)
+        
+        cantidad_final = tablero._Tablero__puntos__[12]["cantidad"]
+        self.assertEqual(cantidad_final, cantidad_inicial - 1)
+    
+    def test_aplicar_movimiento_aumenta_cantidad_destino(self):
+        tablero = Tablero()
+        cantidad_inicial = tablero._Tablero__puntos__[8]["cantidad"]
+        
+        tablero.aplicar_hay_ficha(ficha1, 12, 4)  # 12 → 8
+        
+        cantidad_final = tablero._Tablero__puntos__[8]["cantidad"]
+        self.assertEqual(cantidad_final, cantidad_inicial + 1)
+    
+    def test_aplicar_movimiento_cambia_color_destino(self):
+        tablero = Tablero()
+        
+        tablero.aplicar_hay_ficha(ficha1, 12, 4)  # 12 → 8
+        
+        self.assertEqual(tablero._Tablero__puntos__[8]["color"], ficha1)
 
 
 
