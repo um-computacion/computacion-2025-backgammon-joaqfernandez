@@ -60,5 +60,52 @@ class testTablero(unittest.TestCase):
     def test_no_puede_reingresar_negro_dado6(self):
         tablero = Tablero()
         self.assertFalse(tablero.puede_reingresar("NEGRO", 6))
+
+    def test_direccion_blanco_negativa(self):
+        tablero = Tablero()
+        self.assertEqual(tablero.definir_direccion(ficha1), -1)
+    
+    def test_direccion_negro_positiva(self):
+        tablero = Tablero()
+        self.assertEqual(tablero.definir_direccion(ficha2), +1)
+    
+    def test_lugar_destino_blanco_dado3(self):
+        tablero = Tablero()
+        # Blanco en 23, dado 3 → 20
+        self.assertEqual(tablero.lugar_destino(ficha1, 23, 3), 20)
+    
+    def test_lugar_destino_negro_dado4(self):
+        tablero = Tablero()
+        # Negro en 0, dado 4 → 4
+        self.assertEqual(tablero.lugar_destino(ficha2, 0, 4), 4)
+    
+    def test_movimiento_a_punto_vacio_es_valido(self):
+        tablero = Tablero()
+        # Punto 1 está vacío
+        self.assertTrue(tablero.movimiento_regular(ficha1, 1))
+    
+    def test_movimiento_a_punto_propio_es_valido(self):
+        tablero = Tablero()
+        # Punto 5 tiene fichas blancas
+        self.assertTrue(tablero.movimiento_regular(ficha1, 5))
+    
+    def test_movimiento_fuera_de_rango_no_valido(self):
+        tablero = Tablero()
+        self.assertFalse(tablero.movimiento_regular(ficha1, -1))
+        self.assertFalse(tablero.movimiento_regular(ficha1, 24)) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
     unittest.main()
