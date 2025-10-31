@@ -237,5 +237,50 @@ class TestBackgammonGameVictoria(unittest.TestCase):
         
         self.assertTrue(juego.esta_terminado())
 
+
+class TestBackgammonGameEstado(unittest.TestCase): 
+    def test_obtener_estado_juego_inicial_tiene_claves_requeridas(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        estado = juego.obtener_estado_juego()
+        self.assertIsInstance(estado, dict)
+        self.assertIn("turno", estado)
+        self.assertIn("color_turno", estado)
+        self.assertIn("dados_disponibles", estado)
+        self.assertIn("ganador", estado)
+        self.assertIn("fichas_blanco_barra", estado)
+        self.assertIn("fichas_negro_barra", estado)
+        self.assertIn("fichas_blanco_fuera", estado)
+        self.assertIn("fichas_negro_fuera", estado)
+    
+    def test_obtener_estado_juego_con_turno_iniciado(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        
+        estado = juego.obtener_estado_juego()
+        self.assertIn(estado["turno"], ["Alice", "Bob"])
+        self.assertIn(estado["color_turno"], ["BLANCO", "NEGRO"])
+        self.assertIsNone(estado["ganador"])
+    
+    def test_obtener_estado_juego_con_dados_tirados(self):
+        """Verifica el estado con dados tirados."""
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        estado = juego.obtener_estado_juego()
+        self.assertGreater(len(estado["dados_disponibles"]), 0)
+        self.assertTrue(all(1 <= d <= 6 for d in estado["dados_disponibles"]))
+    
+    def test_obtener_estado_fichas_iniciales_en_cero(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        estado = juego.obtener_estado_juego()
+        self.assertEqual(estado["fichas_blanco_barra"], 0)
+        self.assertEqual(estado["fichas_negro_barra"], 0)
+        self.assertEqual(estado["fichas_blanco_fuera"], 0)
+        self.assertEqual(estado["fichas_negro_fuera"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
