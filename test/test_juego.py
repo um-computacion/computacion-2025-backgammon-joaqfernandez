@@ -281,6 +281,28 @@ class TestBackgammonGameEstado(unittest.TestCase):
         self.assertEqual(estado["fichas_blanco_fuera"], 0)
         self.assertEqual(estado["fichas_negro_fuera"], 0)
 
+class TestBackgammonGameReiniciar(unittest.TestCase):
+    """Tests para reiniciar el juego."""
+    
+    def test_reiniciar_juego_resetea_estado(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        juego.reiniciar_juego()
+        
+        self.assertIsNone(juego.turno_actual)
+        self.assertIsNone(juego.ganador)
+        self.assertEqual(juego.dados_disponibles, [])
+        self.assertIsInstance(juego.tablero, Tablero)
+    
+    def test_reiniciar_juego_crea_nuevo_tablero(self):
+        juego = BackgammonGame("joaquin", "martin")
+        tablero_original = juego.tablero
+        
+        juego.reiniciar_juego()
+        
+        self.assertIsNot(juego.tablero, tablero_original)
 
 if __name__ == "__main__":
     unittest.main()
