@@ -141,7 +141,43 @@ class testTablero(unittest.TestCase):
         
         self.assertEqual(tablero._Tablero__puntos__[8]["color"], ficha1)
 
-
+    def test_punto_origen_queda_sin_color_si_se_vacia(self):
+        tablero = Tablero()
+        
+        # Punto 0 tiene solo 2 fichas negras
+        tablero.aplicar_hay_ficha(ficha2, 0, 3)  # Primera
+        tablero.aplicar_hay_ficha(ficha2, 0, 3)  # Segunda
+        
+        self.assertIsNone(tablero._Tablero__puntos__[0]["color"])
+        self.assertEqual(tablero._Tablero__puntos__[0]["cantidad"], 0)
+    
+    def test_movimiento_invalido_lanza_error(self):
+        tablero = Tablero()
+        
+        with self.assertRaises(ValueError):
+            tablero.aplicar_hay_ficha(ficha1, 1, 3)  # Punto 1 está vacío
+    
+    def test_total_fichas_blanco_inicial_15(self):
+        tablero = Tablero()
+        p = tablero.obtener_puntos()
+        
+        total = sum(punto["cantidad"] for punto in p if punto["color"] == ficha1)
+        self.assertEqual(total, 15)
+    
+    def test_total_fichas_negro_inicial_15(self):
+        tablero = Tablero()
+        p = tablero.obtener_puntos()
+        
+        total = sum(punto["cantidad"] for punto in p if punto["color"] == ficha2)
+        self.assertEqual(total, 15)
+    
+    def test_barra_inicial_vacia_blanco(self):
+        tablero = Tablero()
+        self.assertEqual(tablero.fichas_en_barra(ficha1), 0)
+    
+    def test_barra_inicial_vacia_negro(self):
+        tablero = Tablero()
+        self.assertEqual(tablero.fichas_en_barra(ficha2), 0)
 
 
 
