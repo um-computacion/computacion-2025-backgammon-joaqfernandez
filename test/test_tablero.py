@@ -179,10 +179,45 @@ class testTablero(unittest.TestCase):
         tablero = Tablero()
         self.assertEqual(tablero.fichas_en_barra(ficha2), 0)
 
-
-
-
-
+    def test_fichas_fuera_inicial_cero_blanco(self):
+        tablero = Tablero()
+        self.assertEqual(tablero.fichas_fuera(ficha1), 0)
+    
+    def test_fichas_fuera_inicial_cero_negro(self):
+        tablero = Tablero()
+        self.assertEqual(tablero.fichas_fuera(ficha2), 0)
+    
+    def test_no_hay_obligacion_reingresar_inicial_blanco(self):
+        tablero = Tablero()
+        self.assertFalse(tablero.hay_obligacion_reingresar(ficha1))
+    
+    def test_no_hay_obligacion_reingresar_inicial_negro(self):
+        tablero = Tablero()
+        self.assertFalse(tablero.hay_obligacion_reingresar(ficha2))
+    
+    def test_punto_entrada_blanco_dado1(self):
+        tablero = Tablero()
+        # Blanco entra en 24-1 = 23
+        self.assertEqual(tablero.punto_entrada_desde_barra(ficha1, 1), 23)
+    
+    def test_punto_entrada_negro_dado1(self):
+        tablero = Tablero()
+        # Negro entra en 1-1 = 0
+        self.assertEqual(tablero.punto_entrada_desde_barra(ficha2, 1), 0)
+    
+    def test_punto_entrada_dado_invalido_lanza_error(self):
+        tablero = Tablero()
+        
+        with self.assertRaises(ValueError):
+            tablero.punto_entrada_desde_barra(ficha1, 0)
+        
+        with self.assertRaises(ValueError):
+            tablero.punto_entrada_desde_barra(ficha1, 7)
+    
+    def test_puede_reingresar_a_punto_vacio(self):
+        tablero = Tablero()
+        # Punto 22 está vacío, blanco puede entrar con dado 2 (24-2=22)
+        self.assertTrue(tablero.puede_reingresar(ficha1, 2))
 
 
 
