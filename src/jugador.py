@@ -22,26 +22,44 @@ class Jugador:
     def direccion(self, tablero) -> int:
         return tablero.definir_direccion(self.__color__)
     
-    def movimientos_legales(self, tablero, dados: list[int]) -> list[tuple[int,int,int]]:
-        legales: list[tuple[int,int,int]] = []
+    def movimientos_legales(self, tablero, dados: List[int]) -> List[Tuple[int, int, int]]:
+        legales: List[Tuple[int, int, int]] = []
+        
+        print(f"\n=== BUSCANDO MOVIMIENTOS ===")  # DEBUG
+        print(f"Color: {self.__color__}, Dados: {dados}")  # DEBUG
 
+        # Si hay fichas en la barra, solo se pueden reingresar
         if tablero.hay_obligacion_reingresar(self.__color__):
+            print(f"HAY OBLIGACIÓN DE REINGRESAR")  # DEBUG
             for d in dados:
                 if tablero.puede_reingresar(self.__color__, d):
                     destino = tablero.punto_entrada_desde_barra(self.__color__, d)
-                    #-1 = desde la barra
                     legales.append((-1, destino, d))
+                    print(f"  Reingreso posible: barra → {destino} con dado {d}")  # DEBUG
             return legales
 
+        # Movimientos regulares
+        puntos = tablero.obtener_puntos()
+        print(f"Buscando movimientos regulares...")  # DEBUG
+        
         for origen in range(24):
-            p = tablero._Tablero__puntos__[origen]
+            p = puntos[origen]
             if p["color"] != self.__color__ or p["cantidad"] == 0:
                 continue
+            
+            print(f"  Punto {origen}: {p['cantidad']} fichas {p['color']}")  # DEBUG
+            
             for d in dados:
+                destino = tablero.lugar_destino(self.__color__, origen, d)
+                print(f"    Dado {d}: {origen} → {destino}...", end=" ")  # DEBUG
+                
                 if tablero.hay_ficha_o_no(self.__color__, origen, d):
-                    destino = tablero.lugar_destino(self.__color__, origen, d)
                     legales.append((origen, destino, d))
+                    print(f"✓ VÁLIDO")  # DEBUG
+                else:
+                    print(f"✗ INVÁLIDO")  # DEBUG
 
+        print(f"Total movimientos legales: {len(legales)}")  # DEBUG
         return legales
 
     def puede_mover(self, tablero, dados: List[int]) -> bool:
