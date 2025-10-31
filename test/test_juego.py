@@ -36,3 +36,30 @@ class TestBackgammonGameInit(unittest.TestCase):
         
         self.assertEqual(juego.dados_disponibles, [])
         self.assertFalse(juego.tiene_dados_disponibles())
+
+class TestBackgammonGameTurnos(unittest.TestCase):
+    
+    def test_determinar_primer_turno(self):
+        juego = BackgammonGame("Alice", "Bob")
+        
+        primer_jugador = juego.determinar_primer_turno()
+        self.assertIn(primer_jugador, [juego.jugador1, juego.jugador2])
+        self.assertIsInstance(primer_jugador, Jugador)
+
+    def test_iniciar_juego_asigna_turno(self):
+        juego = BackgammonGame("Alice", "Bob")
+        juego.iniciar_juego()
+        
+        self.assertIsNotNone(juego.turno_actual)
+        self.assertIn(juego.turno_actual, [juego.jugador1, juego.jugador2])
+    
+    def test_cambiar_turno(self):
+        juego = BackgammonGame("Alice", "Bob")
+        juego.iniciar_juego()
+        
+        turno_inicial = juego.turno_actual
+        juego.cambiar_turno()
+        self.assertNotEqual(juego.turno_actual, turno_inicial)
+        
+        juego.cambiar_turno()  
+        self.assertEqual(juego.turno_actual, turno_inicial)
