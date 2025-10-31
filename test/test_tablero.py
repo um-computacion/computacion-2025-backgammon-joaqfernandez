@@ -220,6 +220,34 @@ class testTablero(unittest.TestCase):
         self.assertTrue(tablero.puede_reingresar(ficha1, 2))
 
 
+    def test_secuencia_movimientos_conserva_fichas(self):
+        tablero = Tablero()
+        p = tablero.obtener_puntos()
+        
+        inicial = sum(punto["cantidad"] for punto in p if punto["color"] == ficha1)
+        
+        # Hacer varios movimientos
+        tablero.aplicar_hay_ficha(ficha1, 12, 3)
+        tablero.aplicar_hay_ficha(ficha1, 12, 4)
+        
+        p = tablero.obtener_puntos()
+        final = sum(punto["cantidad"] for punto in p if punto["color"] == ficha1)
+        
+        self.assertEqual(inicial, final)
+    
+    def test_iter_puntos_retorna_24_elementos(self):
+        tablero = Tablero()
+        puntos_iterados = list(tablero.iter_puntos())
+        self.assertEqual(len(puntos_iterados), 24)
+    
+    def test_iter_puntos_formato_correcto(self):
+        tablero = Tablero()
+        
+        for i, color, cantidad in tablero.iter_puntos():
+            self.assertIsInstance(i, int)
+            self.assertTrue(0 <= i < 24)
+            self.assertTrue(color is None or color in [ficha1, ficha2])
+            self.assertIsInstance(cantidad, int)
 
 
 if __name__ == "__main__":
