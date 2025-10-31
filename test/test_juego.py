@@ -362,7 +362,54 @@ class TestBackgammonGameIntegracion(unittest.TestCase):
         self.assertNotEqual(turno1, turno2)
         self.assertFalse(juego.tiene_dados_disponibles())
 
+class TestBackgammonGameProperties(unittest.TestCase):
+    def test_property_tablero_retorna_instancia_correcta(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        self.assertIsInstance(juego.tablero, Tablero)
+        self.assertIs(juego.tablero, juego._BackgammonGame__tablero__)
     
+    def test_property_jugadores_retornan_instancias_correctas(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        self.assertIsInstance(juego.jugador1, Jugador)
+        self.assertIsInstance(juego.jugador2, Jugador)
+        self.assertEqual(juego.jugador1.nombre, "joaquin")
+        self.assertEqual(juego.jugador2.nombre, "martin")
+    
+    def test_property_turno_actual_inicialmente_none(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        self.assertIsNone(juego.turno_actual)
+        
+        juego.iniciar_juego()
+        self.assertIn(juego.turno_actual, [juego.jugador1, juego.jugador2])
+    
+    def test_property_ganador_inicialmente_none(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        self.assertIsNone(juego.ganador)
+    
+    def test_property_dados_disponibles_retorna_lista(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        self.assertEqual(juego.dados_disponibles, [])
+        
+        juego.tirar_dados()
+        self.assertIsInstance(juego.dados_disponibles, list)
+        self.assertIn(len(juego.dados_disponibles), [2, 4])
+    
+    def test_properties_son_readonly(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        # Intentar asignar a properties debería fallar
+        with self.assertRaises(AttributeError):
+            juego.tablero = None
+        
+        with self.assertRaises(AttributeError):
+            juego.jugador1 = None
+
+
 
 if __name__ == "__main__":
     unittest.main()
