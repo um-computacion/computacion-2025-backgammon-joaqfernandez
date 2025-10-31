@@ -63,3 +63,33 @@ class TestBackgammonGameTurnos(unittest.TestCase):
         
         juego.cambiar_turno()  
         self.assertEqual(juego.turno_actual, turno_inicial)
+    
+    def test_cambiar_turno_limpia_dados(self):
+        juego = BackgammonGame("Alice", "Bob")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        self.assertGreater(len(juego.dados_disponibles), 0)
+        
+        juego.cambiar_turno()
+        
+        self.assertEqual(juego.dados_disponibles, [])
+
+
+class TestBackgammonGameDados(unittest.TestCase):
+    
+    def test_tirar_dados_normal(self):
+        juego = BackgammonGame("Alice", "Bob")
+        
+        dado1, dado2 = juego.tirar_dados()
+        
+        self.assertGreaterEqual(dado1, 1)
+        self.assertLessEqual(dado1, 6)
+        self.assertGreaterEqual(dado2, 1)
+        self.assertLessEqual(dado2, 6)
+        self.assertIn(len(juego.dados_disponibles), [2, 4])
+    
+
+
+if __name__ == "__main__":
+    unittest.main()
