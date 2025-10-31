@@ -1,6 +1,3 @@
 venv/
 .coverage/
-coverage.xml    .DS_Store
-.coverage
-cobertura.xml
-coverage_report.txt
+coverage.xml    
