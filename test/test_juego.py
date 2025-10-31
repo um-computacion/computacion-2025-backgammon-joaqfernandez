@@ -173,6 +173,32 @@ class TestBackgammonGameMovimientos(unittest.TestCase):
         movimientos = juego.obtener_movimientos_legales()
         self.assertIsInstance(movimientos, list)
 
+    def test_puede_realizar_movimiento_sin_dados_retorna_false(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        
+        self.assertFalse(juego.puede_realizar_movimiento())
+    
+    def test_puede_realizar_movimiento_con_dados_retorna_bool(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        puede_mover = juego.puede_realizar_movimiento()
+        self.assertIsInstance(puede_mover, bool)
+    
+    def test_realizar_movimiento_dado_no_disponible(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        # Intentar usar un dado que definitivamente no está
+        dado_invalido = 10
+        
+        with self.assertRaises(ValueError) as context:
+            juego.realizar_movimiento(0, dado_invalido)
+        
+        self.assertIn("no está disponible", str(context.exception))
 
 if __name__ == "__main__":
     unittest.main()
