@@ -219,3 +219,11 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
   - `__reloj__` a 60 FPS; `actualizar()` preparado para animaciones futuras.
 - **Integración**:
   - `main()` ejecutable directo del módulo.
+
+## [0.28.1] - 2025-10-31 11:45
+### Changed
+- **Rectángulo del botón en pantalla de victoria**: se usaba `pygame.draw.rect(self.__pantalla__, __color_boton__.boton_rect, ...)` (argumento inválido).  
+  - Reemplazado por `pygame.draw.rect(self.__pantalla__, __color_boton__, boton_rect, border_radius=10)`.
+- **Coordenadas fuera del tablero**: `obtener_punto_desde_posicion()` ya devolvía `-1` correctamente; se validó el uso para evitar accesos fuera de rango en `manejar_click`.
+- **Mensajes temporales**: se asegura que `dibujar_mensaje()` no crashee cuando el mensaje expira (condición protegida por `get_ticks()`).
+- **Hover de botón**: variable local `__color_boton__` utilizada de forma consistente en `menu` y `victoria`.
