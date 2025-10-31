@@ -90,6 +90,37 @@ class TestBackgammonGameDados(unittest.TestCase):
         self.assertIn(len(juego.dados_disponibles), [2, 4])
     
 
+    def test_tirar_dados_dobles_cuatro_movimientos(self):
+        juego = BackgammonGame("Alice", "Bob")
+        
+        # Probar múltiples veces hasta obtener dobles
+        encontrado_dobles = False
+        for _ in range(100):
+            dado1, dado2 = juego.tirar_dados()
+            if dado1 == dado2:
+                self.assertEqual(len(juego.dados_disponibles), 4)
+                self.assertTrue(all(d == dado1 for d in juego.dados_disponibles))
+                encontrado_dobles = True
+                break
+        
+        # Si no encontramos dobles, verificar dados normales
+        if not encontrado_dobles:
+            juego2 = BackgammonGame("Test1", "Test2")
+            d1, d2 = juego2.tirar_dados()
+            if d1 != d2:
+                self.assertEqual(len(juego2.dados_disponibles), 2)
+    
+    def test_usar_dado_reduce_disponibles(self):
+        juego = BackgammonGame("Alice", "Bob")
+        juego.tirar_dados()
+        
+        dados_iniciales = len(juego.dados_disponibles)
+        valor_usado = juego.dados_disponibles[0]
+        
+        juego.usar_dado(valor_usado)
+        
+        self.assertEqual(len(juego.dados_disponibles), dados_iniciales - 1)
+    
 
 if __name__ == "__main__":
     unittest.main()
