@@ -200,5 +200,42 @@ class TestBackgammonGameMovimientos(unittest.TestCase):
         
         self.assertIn("no está disponible", str(context.exception))
 
+
+class TestBackgammonGameVictoria(unittest.TestCase):    
+    def test_verificar_victoria_inicial_sin_ganador(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        
+        self.assertFalse(juego.verificar_victoria())
+        self.assertIsNone(juego.ganador)
+    
+    def test_esta_terminado_inicial_retorna_false(self):
+        juego = BackgammonGame("joaquin", "martin")
+        
+        self.assertFalse(juego.esta_terminado())
+    
+    def test_verificar_victoria_con_15_fichas_fuera(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        
+        # Simular que un jugador sacó todas las fichas
+        color = juego.turno_actual.color
+        juego.tablero._Tablero__fichas_fuera__[color] = 15
+        
+        self.assertTrue(juego.verificar_victoria())
+        self.assertEqual(juego.ganador, juego.turno_actual)
+        self.assertTrue(juego.esta_terminado())
+    
+    def test_esta_terminado_con_ganador_retorna_true(self):
+        juego = BackgammonGame("joaquin", "martin")
+        juego.iniciar_juego()
+        
+        # Forzar ganador
+        color = juego.turno_actual.color
+        juego.tablero._Tablero__fichas_fuera__[color] = 15
+        juego.verificar_victoria()
+        
+        self.assertTrue(juego.esta_terminado())
+
 if __name__ == "__main__":
     unittest.main()
