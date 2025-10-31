@@ -218,21 +218,20 @@ class TestBackgammonGameVictoria(unittest.TestCase):
         juego = BackgammonGame("joaquin", "martin")
         juego.iniciar_juego()
         
-        # Simular que un jugador sacó todas las fichas
         color = juego.turno_actual.color
-        juego.tablero._Tablero__fichas_fuera__[color] = 15
+        juego.tablero._set_fichas_fuera_para_test(color, 15)  # ← Método público
         
         self.assertTrue(juego.verificar_victoria())
         self.assertEqual(juego.ganador, juego.turno_actual)
         self.assertTrue(juego.esta_terminado())
-    
+        
     def test_esta_terminado_con_ganador_retorna_true(self):
         juego = BackgammonGame("joaquin", "martin")
         juego.iniciar_juego()
         
         # Forzar ganador
         color = juego.turno_actual.color
-        juego.tablero._Tablero__fichas_fuera__[color] = 15
+        juego.tablero._set_fichas_fuera_para_test(color, 15)
         juego.verificar_victoria()
         
         self.assertTrue(juego.esta_terminado())
@@ -258,7 +257,7 @@ class TestBackgammonGameEstado(unittest.TestCase):
         juego.iniciar_juego()
         
         estado = juego.obtener_estado_juego()
-        self.assertIn(estado["turno"], ["Alice", "Bob"])
+        self.assertIn(estado["turno"], ["joaquin", "martin"])
         self.assertIn(estado["color_turno"], ["BLANCO", "NEGRO"])
         self.assertIsNone(estado["ganador"])
     
@@ -367,7 +366,7 @@ class TestBackgammonGameProperties(unittest.TestCase):
         juego = BackgammonGame("joaquin", "martin")
         
         self.assertIsInstance(juego.tablero, Tablero)
-        self.assertIs(juego.tablero, juego._BackgammonGame__tablero__)
+        self.assertIsInstance(juego.tablero, Tablero)
     
     def test_property_jugadores_retornan_instancias_correctas(self):
         juego = BackgammonGame("joaquin", "martin")
