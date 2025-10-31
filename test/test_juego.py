@@ -304,5 +304,33 @@ class TestBackgammonGameReiniciar(unittest.TestCase):
         
         self.assertIsNot(juego.tablero, tablero_original)
 
+class TestBackgammonGameIntegracion(unittest.TestCase):
+    def test_flujo_basico_juego_completo(self):
+        juego = BackgammonGame("Player1", "Player2")
+        
+        # Iniciar juego
+        juego.iniciar_juego()
+        self.assertIsNotNone(juego.turno_actual)
+        # Tirar dados
+        dado1, dado2 = juego.tirar_dados()
+        self.assertGreater(len(juego.dados_disponibles), 0)
+        # Obtener movimientos
+        movimientos = juego.obtener_movimientos_legales()
+        self.assertIsInstance(movimientos, list)
+        # Estado del juego
+        estado = juego.obtener_estado_juego()
+        self.assertIsNotNone(estado["turno"])
+    
+    def test_jugar_turno_ejecuta_correctamente(self):
+        juego = BackgammonGame("Player1", "Player2")
+        juego.iniciar_juego()
+        
+        turno_inicial = juego.turno_actual
+        resultado = juego.jugar_turno()
+        
+        self.assertIsInstance(resultado, bool)
+        self.assertTrue(len(juego.dados_disponibles) > 0 or resultado is False)
+    
+
 if __name__ == "__main__":
     unittest.main()
