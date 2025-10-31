@@ -330,6 +330,38 @@ class TestBackgammonGameIntegracion(unittest.TestCase):
         
         self.assertIsInstance(resultado, bool)
         self.assertTrue(len(juego.dados_disponibles) > 0 or resultado is False)
+
+    def test_multiples_cambios_de_turno(self):
+        juego = BackgammonGame("Player1", "Player2")
+        juego.iniciar_juego()
+        
+        turnos_vistos = set()
+        for _ in range(10):
+            turnos_vistos.add(juego.turno_actual)
+            juego.cambiar_turno()
+        
+        # Ambos jugadores deberían haber tenido turno
+        self.assertEqual(len(turnos_vistos), 2)
+    
+    def test_secuencia_tirar_usar_cambiar(self):
+        juego = BackgammonGame("Player1", "Player2")
+        juego.iniciar_juego()
+        
+        turno1 = juego.turno_actual
+        
+        # Tirar dados
+        juego.tirar_dados()
+        self.assertTrue(juego.tiene_dados_disponibles())
+        # Usar todos los dados
+        while juego.tiene_dados_disponibles():
+            juego.usar_dado(juego.dados_disponibles[0])
+        # Cambiar turno
+        juego.cambiar_turno()
+        turno2 = juego.turno_actual
+        
+        self.assertNotEqual(turno1, turno2)
+        self.assertFalse(juego.tiene_dados_disponibles())
+
     
 
 if __name__ == "__main__":
