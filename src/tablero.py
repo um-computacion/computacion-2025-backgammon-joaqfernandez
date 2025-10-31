@@ -116,3 +116,7 @@ class Tablero:
 
         self.__barra__[color] -= 1
         return destino
+
+    def _set_fichas_fuera_para_test(self, color: str, cantidad: int):
+    #Método auxiliar solo para tests. Modifica fichas fuera.
+        self.__fichas_fuera__[color] = cantidad
