@@ -11,10 +11,3 @@ coverage_report.txt
 
 # pytest
 .pytest_cache/
-
-# macOS
-.DS_Store
-
-# Entorno virtual
-.venv/
-venv/
