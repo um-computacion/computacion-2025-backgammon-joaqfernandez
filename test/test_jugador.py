@@ -94,6 +94,9 @@ class TestJugador(unittest.TestCase):
         resultado = self.blanco.puede_mover(tablero_bloqueado, dados)
         self.assertFalse(resultado)
 
+# ========================================================================
+        # TESTS DE MOVIMIENTOS_LEGALES - FORMATO Y ESTRUCTURA
+# ========================================================================
 
     def test_movimientos_legales_funcione(self):
         dados = [1, 2]
@@ -101,6 +104,23 @@ class TestJugador(unittest.TestCase):
         movim_jug2 = self.negro.movimientos_legales(self.tablero, dados)
         self.assertIsInstance(movim_jug1, list)
         self.assertIsInstance(movim_jug2, list)
+
+    def test_movimientos_legales_formato_tupla(self):
+        dados = [3, 5]
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Debe haber al menos un movimiento en tablero inicial
+        self.assertGreater(len(movs), 0)
+        
+        for mov in movs:
+            self.assertIsInstance(mov, tuple)
+            self.assertEqual(len(mov), 3)
+            origen, destino, dado_usado = mov
+            self.assertIsInstance(origen, int)
+            self.assertIsInstance(destino, int)
+            self.assertIsInstance(dado_usado, int)
+            self.assertIn(dado_usado, dados)
+
     
     def test_mover_valido(self):
         dados = [1, 2]
