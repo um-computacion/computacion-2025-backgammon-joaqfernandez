@@ -1,5 +1,11 @@
 venv/
-.coverage/
-coverage.xml    
-.coveragerc
+
+# coverage artefacts
 .coverage
+.coverage.*
+coverage
+.coveragerc
+coveragerc
+coverage.xml
+coverage_report.txt
+htmlcov/
