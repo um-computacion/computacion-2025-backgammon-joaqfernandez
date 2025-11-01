@@ -213,22 +213,43 @@ class TestJugador(unittest.TestCase):
 # ============================================================
 
     def test_mover_valido(self):
-        tablero = Tablero()
-        jugador_blanco = Jugador("Blanco", "BLANCO")
         dados = [1, 2]
-
-        movs = jugador_blanco.movimientos_legales(tablero, dados)
+        movim = self.blanco.movimientos_legales(self.tablero, dados)
         
-        self.assertGreater(len(movs), 0)
+        if movim:
+            origen, destino, dado = movim[0]
+            d_aplicado = self.blanco.mover(self.tablero, origen, dado)
+            self.assertEqual(destino, d_aplicado)
+    
+    
+    def test_mover_actualiza_tablero(self):
+        # Guardar estado inicial
+        origen = 23  # Punto inicial de BLANCO con 2 fichas
+        dado = 1
         
-        for origen, destino, dado_usado in movs:
-            self.assertIsInstance(origen, int)
-            self.assertIsInstance(destino, int)
-            self.assertIn(dado_usado, dados)
-            # Sin fichas en barra, origen NO debe ser -1
-            self.assertGreaterEqual(origen, 0)
-    
+        cantidad_origen_antes = self.tablero._Tablero__puntos__[origen]["cantidad"]
+        destino = self.tablero.lugar_destino("BLANCO", origen, dado)
+        cantidad_destino_antes = self.tablero._Tablero__puntos__[destino]["cantidad"]
+        
+        # Ejecutar movimiento
+        self.blanco.mover(self.tablero, origen, dado)
+        
+        # Verificar cambios
+        cantidad_origen_despues = self.tablero._Tablero__puntos__[origen]["cantidad"]
+        cantidad_destino_despues = self.tablero._Tablero__puntos__[destino]["cantidad"]
+        
+        self.assertEqual(cantidad_origen_despues, cantidad_origen_antes - 1)
+        self.assertEqual(cantidad_destino_despues, cantidad_destino_antes + 1)
 
-    
+    def test_mover_retorna_destino_correcto(self):
+        origen = 23
+        dado = 2
+        
+        destino_esperado = self.tablero.lugar_destino("BLANCO", origen, dado)
+        destino_retornado = self.blanco.mover(self.tablero, origen, dado)
+        
+        self.assertEqual(destino_retornado, destino_esperado)
+
+
 if __name__ == "__main__":
     unittest.main()
