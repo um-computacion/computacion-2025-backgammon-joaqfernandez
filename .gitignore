@@ -1,4 +1,13 @@
-venv/
-.coverage/
-coverage.xml    
-.coveragerc
+# Python cache
+__pycache__/
+*.pyc
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
+cobertura.xml
+coverage_report.txt
+
+# pytest
+.pytest_cache/
