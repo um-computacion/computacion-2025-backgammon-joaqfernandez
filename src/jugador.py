@@ -1,4 +1,4 @@
-from tablero import Tablero
+from src.tablero import Tablero
 from typing import List, Tuple
 
 ficha1 = "BLANCO"
@@ -23,26 +23,26 @@ class Jugador:
         return tablero.definir_direccion(self.__color__)
     
     def movimientos_legales(self, tablero, dados: list[int]) -> list[tuple[int,int,int]]:
-        legales: list[tuple[int,int,int]] = []
+    legales: list[tuple[int,int,int]] = []
 
-        if tablero.hay_obligacion_reingresar(self.__color__):
-            for d in dados:
-                if tablero.puede_reingresar(self.__color__, d):
-                    destino = tablero.punto_entrada_desde_barra(self.__color__, d)
-                    #-1 = desde la barra
-                    legales.append((-1, destino, d))
-            return legales
-
-        for origen in range(24):
-            p = tablero._Tablero.__puntos__[origen]
-            if p["color"] != self.__color__ or p["cantidad"] == 0:
-                continue
-            for d in dados:
-                if tablero.hay_ficha_o_no(self.__color__, origen, d):
-                    destino = tablero.lugar_destino(self.__color__, origen, d)
-                    legales.append((origen, destino, d))
-
+    if tablero.hay_obligacion_reingresar(self.__color__):
+        for d in dados:
+            if tablero.puede_reingresar(self.__color__, d):
+                destino = tablero.punto_entrada_desde_barra(self.__color__, d)
+                #-1 = desde la barra
+                legales.append((-1, destino, d))
         return legales
+
+    for origen in range(24):
+        p = tablero._Tablero__puntos__[origen]
+        if p["color"] != self.__color__ or p["cantidad"] == 0:
+            continue
+        for d in dados:
+            if tablero.hay_ficha_o_no(self.__color__, origen, d):
+                destino = tablero.lugar_destino(self.__color__, origen, d)
+                legales.append((origen, destino, d))
+
+    return legales
 
     def puede_mover(self, tablero, dados: List[int]) -> bool:
         return len(self.movimientos_legales(tablero, dados)) > 0
