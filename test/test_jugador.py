@@ -125,22 +125,17 @@ class TestJugador(unittest.TestCase):
         # TESTS DE MOVIMIENTOS_LEGALES - SIN BARRA
 # ============================================================
     
-    
-    def test_mover_valido(self):
+    def test_movimientos_legales_sin_barra(self):
         tablero = Tablero()
         jugador_blanco = Jugador("Blanco", "BLANCO")
         dados = [1, 2]
 
         movs = jugador_blanco.movimientos_legales(tablero, dados)
-        
         self.assertGreater(len(movs), 0)
-        
         for origen, destino, dado_usado in movs:
             self.assertIsInstance(origen, int)
             self.assertIsInstance(destino, int)
             self.assertIn(dado_usado, dados)
-            # Sin fichas en barra, origen NO debe ser -1
-            self.assertGreaterEqual(origen, 0)
 
     def test_movimientos_legales_dados_diferentes(self):
         dados = [2, 5]
@@ -213,19 +208,26 @@ class TestJugador(unittest.TestCase):
         # No debería haber movimientos posibles
         self.assertEqual(len(movs), 0)
 
+ # ============================================================
+                    # TESTS DE MOVER
+# ============================================================
 
-    def test_movimientos_legales_sin_barra(self):
+    def test_mover_valido(self):
         tablero = Tablero()
         jugador_blanco = Jugador("Blanco", "BLANCO")
         dados = [1, 2]
 
         movs = jugador_blanco.movimientos_legales(tablero, dados)
+        
         self.assertGreater(len(movs), 0)
+        
         for origen, destino, dado_usado in movs:
             self.assertIsInstance(origen, int)
             self.assertIsInstance(destino, int)
             self.assertIn(dado_usado, dados)
-
+            # Sin fichas en barra, origen NO debe ser -1
+            self.assertGreaterEqual(origen, 0)
+    
 
     
 if __name__ == "__main__":
