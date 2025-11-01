@@ -379,5 +379,6 @@ class testTablero(unittest.TestCase):
         self.assertEqual(tablero._Tablero__puntos__[19]["color"], "BLANCO")
 
 
+
 if __name__ == "__main__":
     unittest.main()
