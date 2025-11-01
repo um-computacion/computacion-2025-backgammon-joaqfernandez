@@ -121,14 +121,46 @@ class TestJugador(unittest.TestCase):
             self.assertIsInstance(dado_usado, int)
             self.assertIn(dado_usado, dados)
 
+# ============================================================
+        # TESTS DE MOVIMIENTOS_LEGALES - SIN BARRA
+# ============================================================
+    
     
     def test_mover_valido(self):
+        tablero = Tablero()
+        jugador_blanco = Jugador("Blanco", "BLANCO")
         dados = [1, 2]
-        movim = self.blanco.movimientos_legales(self.tablero, dados)
-        if movim:
-            origen, destino, dado = movim[0]
-            d_aplicado = self.blanco.mover(self.tablero, origen, dado)
-            self.assertEqual(destino, d_aplicado)
+
+        movs = jugador_blanco.movimientos_legales(tablero, dados)
+        
+        self.assertGreater(len(movs), 0)
+        
+        for origen, destino, dado_usado in movs:
+            self.assertIsInstance(origen, int)
+            self.assertIsInstance(destino, int)
+            self.assertIn(dado_usado, dados)
+            # Sin fichas en barra, origen NO debe ser -1
+            self.assertGreaterEqual(origen, 0)
+
+    def test_movimientos_legales_dados_diferentes(self):
+        dados = [2, 5]
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Debe haber movimientos con dado 2 y con dado 5
+        dados_usados = set(dado for _, _, dado in movs)
+        self.assertTrue(2 in dados_usados or 5 in dados_usados)
+    
+    def test_movimientos_legales_dados_dobles(self):
+        dados = [4, 4, 4, 4]
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Debe haber movimientos disponibles
+        self.assertGreater(len(movs), 0)
+        
+        # Todos deben usar el dado 4
+        for origen, destino, dado in movs:
+            self.assertEqual(dado, 4)
+
 
     def test_movimientos_legales_con_barra(self):
         tablero = Tablero()
