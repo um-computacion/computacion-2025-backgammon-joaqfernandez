@@ -401,6 +401,86 @@ class TestBackgammonGameReiniciar(unittest.TestCase):
         
         self.assertIsNot(juego.tablero, tablero_original)
 
+    def test_reiniciar_juego_con_ganador_establecido(self):
+        juego = BackgammonGame("Player1", "Player2")
+        juego.iniciar_juego()
+        
+        # Establecer un ganador
+        color = juego.turno_actual.color
+        juego.tablero._set_fichas_fuera_para_test(color, 15)
+        juego.verificar_victoria()
+        
+        self.assertIsNotNone(juego.ganador)
+        self.assertTrue(juego.esta_terminado())
+        
+        # Reiniciar
+        juego.reiniciar_juego()
+        
+        # Verificar reset completo
+        self.assertIsNone(juego.ganador)
+        self.assertFalse(juego.esta_terminado())
+
+    def test_reiniciar_juego_con_turno_y_dados_activos(self):
+        juego = BackgammonGame("Player1", "Player2")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        # Estado antes de reiniciar
+        self.assertIsNotNone(juego.turno_actual)
+        self.assertGreater(len(juego.dados_disponibles), 0)
+        
+        # Reiniciar
+        juego.reiniciar_juego()
+        
+        # Verificar limpieza
+        self.assertIsNone(juego.turno_actual)
+        self.assertEqual(juego.dados_disponibles, [])
+
+    def test_reiniciar_juego_restablece_tablero_estado_inicial(self):
+        juego = BackgammonGame("Player1", "Player2")
+        juego.iniciar_juego()
+        juego.tirar_dados()
+        
+        # Hacer algunos movimientos para alterar el tablero
+        if juego.puede_realizar_movimiento():
+            movs = juego.obtener_movimientos_legales()
+            if movs:
+                origen, destino, dado = movs[0]
+                try:
+                    juego.realizar_movimiento(origen, dado)
+                except:
+                    pass
+        
+        # Reiniciar
+        tablero_antes_id = id(juego.tablero)
+        juego.reiniciar_juego()
+        tablero_despues_id = id(juego.tablero)
+        
+        # Verificar que es un tablero nuevo
+        self.assertNotEqual(tablero_antes_id, tablero_despues_id)
+        
+        # Verificar configuración inicial
+        puntos = juego.tablero.obtener_puntos()
+        self.assertEqual(puntos[0]["color"], "NEGRO")
+        self.assertEqual(puntos[0]["cantidad"], 2)
+        self.assertEqual(puntos[23]["color"], "BLANCO")
+        self.assertEqual(puntos[23]["cantidad"], 2)
+
+    def test_reiniciar_juego_mantiene_jugadores(self):
+        juego = BackgammonGame("Joaquin", "Martin")
+        juego.iniciar_juego()
+        
+        jugador1_antes = juego.jugador1
+        jugador2_antes = juego.jugador2
+        
+        juego.reiniciar_juego()
+        
+        # Los jugadores deben ser los mismos objetos
+        self.assertIs(juego.jugador1, jugador1_antes)
+        self.assertIs(juego.jugador2, jugador2_antes)
+        self.assertEqual(juego.jugador1.nombre, "Joaquin")
+        self.assertEqual(juego.jugador2.nombre, "Martin")
+
 class TestBackgammonGameIntegracion(unittest.TestCase):
     def test_flujo_basico_juego_completo(self):
         juego = BackgammonGame("Player1", "Player2")
