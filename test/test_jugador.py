@@ -42,7 +42,23 @@ class TestJugador(unittest.TestCase):
 
     def test_property_color(self):
         self.assertEqual(self.blanco.color, ficha1)
+        self.assertEqual(self.blanco.color, "BLANCO")
         self.assertEqual(self.negro.color, ficha2)
+        self.assertEqual(self.negro.color, "NEGRO")
+
+    def test_property_nombre(self):
+        self.assertEqual(self.blanco.nombre, "Joaquin")
+        self.assertEqual(self.negro.nombre, "Profe Walter")
+    
+    def test_properties_inmutables(self):
+        with self.assertRaises(AttributeError):
+            self.blanco.color = "NEGRO" 
+        with self.assertRaises(AttributeError):
+            self.blanco.nombre = "Otro nombre"
+
+
+
+
 
     def test_direccion(self):
         self.assertEqual(self.blanco.direccion(self.tablero), -1)
