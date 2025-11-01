@@ -27,3 +27,18 @@ class TestCLI(unittest.TestCase):
         cli = CLI()
         self.assertIsNone(cli._CLI__juego__)
         self.assertFalse(cli._CLI__ejecutando__)
+
+ # ==================== TESTS DE LIMPIAR PANTALLA ====================
+    
+    @patch('os.system')
+    @patch('os.name', 'nt')
+    def test_limpiar_pantalla_windows(self, mock_system):
+        self.cli.limpiar_pantalla()
+        mock_system.assert_called_once_with('cls')
+    
+    @patch('os.system')
+    @patch('os.name', 'posix')
+    def test_limpiar_pantalla_unix(self, mock_system):
+        self.cli.limpiar_pantalla()
+        mock_system.assert_called_once_with('clear')
+    
