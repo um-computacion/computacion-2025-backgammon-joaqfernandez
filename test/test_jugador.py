@@ -161,6 +161,9 @@ class TestJugador(unittest.TestCase):
         for origen, destino, dado in movs:
             self.assertEqual(dado, 4)
 
+# ============================================================
+    # TESTS DE MOVIMIENTOS_LEGALES - CON BARRA
+# ============================================================
 
     def test_movimientos_legales_con_barra(self):
         tablero = Tablero()
@@ -169,8 +172,47 @@ class TestJugador(unittest.TestCase):
         dados = [1, 6]
 
         movs = jugador.movimientos_legales(tablero, dados)
+        # Debe incluir reingreso válido
         self.assertIn((-1, 23, 1), movs)
+        
+        # NO debe incluir reingreso bloqueado
+        # (punto 18 tiene 5 fichas NEGRAS en tablero inicial)
         self.assertNotIn((-1, 18, 6), movs)
+        
+        # TODOS los movimientos deben ser desde la barra
+        for origen, _, _ in movs:
+            self.assertEqual(origen, -1)
+
+
+    def test_movimientos_legales_obligacion_reingresar(self):
+        tablero = Tablero()
+        tablero._Tablero__barra__["NEGRO"] = 2
+        jugador_negro = Jugador("Negro", "NEGRO")
+        dados = [3, 4]
+        
+        movs = jugador_negro.movimientos_legales(tablero, dados)
+        
+        # Todos deben ser desde la barra
+        for origen, destino, dado in movs:
+            self.assertEqual(origen, -1)
+
+    def test_movimientos_legales_sin_reingreso_posible(self):
+        tablero = Tablero()
+        
+        # Bloquear todos los puntos de entrada para NEGRO
+        # (puntos 0-5 bloqueados con 2+ fichas BLANCAS)
+        for i in range(6):
+            tablero._Tablero__puntos__[i] = {"color": "BLANCO", "cantidad": 2}
+        
+        tablero._Tablero__barra__["NEGRO"] = 1
+        jugador_negro = Jugador("Negro", "NEGRO")
+        dados = [1, 2, 3, 4, 5, 6]  # Todos los dados posibles
+        
+        movs = jugador_negro.movimientos_legales(tablero, dados)
+        
+        # No debería haber movimientos posibles
+        self.assertEqual(len(movs), 0)
+
 
     def test_movimientos_legales_sin_barra(self):
         tablero = Tablero()
