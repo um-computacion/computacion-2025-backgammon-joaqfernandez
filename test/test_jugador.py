@@ -8,10 +8,37 @@ class TestJugador(unittest.TestCase):
         self.blanco = Jugador("Joaquin", ficha1)
         self.negro = Jugador("Profe Walter", ficha2)
 
+# ============================================================
+                # TESTS DEL CONSTRUCTOR
+# ============================================================
+
     def test_constructor_color_invalido(self):
         with self.assertRaises(ValueError) as context:
             Jugador("Test", "ROJO")
-        self.assertIn("Color inválido", str(context.exception)) 
+        self.assertIn("Color inválido", str(context.exception))
+
+    def test_constructor_color_blanco_valido(self):
+        jugador = Jugador("TestBlanco", "BLANCO")
+        self.assertEqual(jugador.color, "BLANCO")
+        self.assertEqual(jugador.nombre, "TestBlanco") 
+
+    def test_constructor_color_negro_valido(self):
+        jugador = Jugador("TestNegro", "NEGRO")
+        self.assertEqual(jugador.color, "NEGRO")
+        self.assertEqual(jugador.nombre, "TestNegro")
+    
+    def test_constructor_nombre_con_espacios(self):
+        jugador = Jugador("Profe Walter", "NEGRO")
+        self.assertEqual(jugador.nombre, "Profe Walter")
+    
+    def test_constructor_nombre_vacio(self):
+        jugador = Jugador("", "BLANCO")
+        self.assertEqual(jugador.nombre, "")
+
+# ============================================================
+                # TESTS DE PROPERTIES
+# ============================================================
+       
 
     def test_property_color(self):
         self.assertEqual(self.blanco.color, ficha1)
