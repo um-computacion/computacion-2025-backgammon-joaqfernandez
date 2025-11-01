@@ -156,6 +156,83 @@ class TestJugador(unittest.TestCase):
         for origen, destino, dado in movs:
             self.assertEqual(dado, 4)
 
+    def test_movimientos_legales_excluye_bloqueados(self):
+
+        tablero = Tablero()
+        
+        # Bloquear punto 22 con 2+ fichas NEGRAS
+        tablero.__puntos__[22] = {"color": "NEGRO", "cantidad": 2}
+        
+        jugador_blanco = Jugador("Blanco", "BLANCO")
+        dados = [1]  # Desde punto 23, dado 1 llevaría a punto 22 (bloqueado)
+        
+        movs = jugador_blanco.movimientos_legales(tablero, dados)
+        
+        # Verificar que NO exista movimiento desde 23 hacia 22
+        movimientos_desde_23 = [m for m in movs if m[0] == 23]
+        
+        # Si hay un movimiento desde 23, NO debe ir al punto 22
+        for origen, destino, dado in movimientos_desde_23:
+            self.assertNotEqual(destino, 22, 
+                "No debería poder mover a un punto bloqueado")
+
+
+    def test_movimientos_legales_todos_validos(self):
+        dados = [3, 4]
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Verificar que cada movimiento es realmente válido
+        for origen, destino, dado in movs:
+            # El dado usado debe estar en la lista
+            self.assertIn(dado, dados)
+            
+            # Si no es desde la barra, debe haber una ficha del color correcto
+            if origen != -1:
+                punto_origen = self.tablero.__puntos__[origen]
+                self.assertEqual(punto_origen["color"], "BLANCO")
+                self.assertGreater(punto_origen["cantidad"], 0)
+
+    def test_movimientos_legales_sin_obligacion_reingresar(self):
+
+        tablero = Tablero()
+        
+        # Asegurar que NO hay fichas en la barra
+        tablero.__barra__["BLANCO"] = 0
+        tablero.__barra__["NEGRO"] = 0
+        
+        jugador_blanco = Jugador("Blanco", "BLANCO")
+        dados = [2, 3]
+        
+        movs = jugador_blanco.movimientos_legales(tablero, dados)
+        
+        # Debe haber movimientos regulares (no desde la barra)
+        self.assertGreater(len(movs), 0)
+        
+        # NINGUNO debe ser desde la barra
+        for origen, destino, dado in movs:
+            self.assertNotEqual(origen, -1, 
+                "No debería haber movimientos desde la barra si no hay fichas allí")
+
+    def test_movimientos_legales_ignora_puntos_vacios(self):
+        tablero = Tablero()
+        
+        # Vaciar punto 23 (que normalmente tiene fichas BLANCAS)
+        tablero.__puntos__[23] = {"color": None, "cantidad": 0}
+        
+        jugador_blanco = Jugador("Blanco", "BLANCO")
+        dados = [1, 2]
+        
+        movs = jugador_blanco.movimientos_legales(tablero, dados)
+        
+        # NO debe haber movimientos desde el punto 23
+        movimientos_desde_23 = [m for m in movs if m[0] == 23]
+        self.assertEqual(len(movimientos_desde_23), 0,
+            "No debería haber movimientos desde un punto vacío")
+
+
+
+
+    
 # ============================================================
     # TESTS DE MOVIMIENTOS_LEGALES - CON BARRA
 # ============================================================
