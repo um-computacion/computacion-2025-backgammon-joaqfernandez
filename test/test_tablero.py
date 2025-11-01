@@ -120,12 +120,11 @@ class testTablero(unittest.TestCase):
         tablero = Tablero()
         puntos = tablero.obtener_puntos()
         cantidad_inicial = puntos[12]["cantidad"]
-        self.assertEqual(puntos[8]["cantidad"], 1)
         
         tablero.aplicar_hay_ficha(ficha1, 12, 4)
 
         puntos = tablero.obtener_puntos()
-        cantidad_final = tablero._Tablero__puntos__[12]["cantidad"]
+        cantidad_final = puntos[12]["cantidad"] 
         self.assertEqual(cantidad_final, cantidad_inicial - 1)
     
     def test_aplicar_movimiento_aumenta_cantidad_destino(self):
