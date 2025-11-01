@@ -250,6 +250,56 @@ class TestJugador(unittest.TestCase):
         
         self.assertEqual(destino_retornado, destino_esperado)
 
+    
+# ============================================================
+            # TESTS DE CASOS LÍMITE Y EDGE CASES
+# ============================================================
+    
+    def test_movimientos_con_lista_dados_vacia(self):
+        dados = []
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        self.assertEqual(len(movs), 0)
+    
+    def test_movimientos_con_un_solo_dado(self):
+        dados = [3]
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Debe haber movimientos
+        self.assertGreater(len(movs), 0)
+        
+        # Todos deben usar el dado 3
+        for _, _, dado in movs:
+            self.assertEqual(dado, 3)
+    
+    def test_diferentes_jugadores_mismos_dados(self):
+        dados = [2, 3]
+        movs_blanco = self.blanco.movimientos_legales(self.tablero, dados)
+        movs_negro = self.negro.movimientos_legales(self.tablero, dados)
+        
+        # Ambos deben tener movimientos
+        self.assertGreater(len(movs_blanco), 0)
+        self.assertGreater(len(movs_negro), 0)
+        
+        # Los movimientos deben ser diferentes (diferentes direcciones)
+        # Comparamos los conjuntos de movimientos
+        set_blanco = set(movs_blanco)
+        set_negro = set(movs_negro)
+        
+        # No deberían ser idénticos
+        self.assertNotEqual(set_blanco, set_negro)
+    
+    def test_consistencia_puede_mover_y_movimientos_legales(self):
+        dados = [4, 5]
+        
+        puede_mover = self.blanco.puede_mover(self.tablero, dados)
+        movimientos = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        if puede_mover:
+            self.assertGreater(len(movimientos), 0)
+        else:
+            self.assertEqual(len(movimientos), 0)
+
+
 
 if __name__ == "__main__":
     unittest.main()
