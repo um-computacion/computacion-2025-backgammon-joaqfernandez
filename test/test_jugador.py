@@ -57,12 +57,21 @@ class TestJugador(unittest.TestCase):
             self.blanco.nombre = "Otro nombre"
 
 
-
-
-
+# ============================================================
+                # TESTS DE DIRECCIÓN
+# ============================================================
+    
     def test_direccion(self):
         self.assertEqual(self.blanco.direccion(self.tablero), -1)
         self.assertEqual(self.negro.direccion(self.tablero), +1)
+
+
+    def test_direccion_es_consistente(self):
+        dir1 = self.blanco.direccion(self.tablero)
+        dir2 = self.blanco.direccion(self.tablero)
+        self.assertEqual(dir1, dir2)
+        self.assertEqual(dir1, -1)
+
 
     def test_puede_mover_con_movimientos_disponibles(self):
         dados = [1, 2]
