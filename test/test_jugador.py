@@ -86,8 +86,8 @@ class TestJugador(unittest.TestCase):
         tablero_bloqueado = Tablero()
         # Vaciar posiciones de BLANCO
         for i in range(24):
-            if tablero_bloqueado._Tablero__puntos__[i]["color"] == "BLANCO":
-                tablero_bloqueado._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+            if tablero_bloqueado.__puntos__[i]["color"] == "BLANCO":
+                tablero_bloqueado.__puntos__[i] = {"color": None, "cantidad": 0}
         
         # BLANCO no debería poder mover porque no tiene fichas
         dados = [1, 2]
@@ -162,7 +162,7 @@ class TestJugador(unittest.TestCase):
 
     def test_movimientos_legales_con_barra(self):
         tablero = Tablero()
-        tablero._Tablero__barra__["BLANCO"] = 1
+        tablero.__barra__["BLANCO"] = 1
         jugador = Jugador("Blanco", "BLANCO")
         dados = [1, 6]
 
@@ -181,7 +181,7 @@ class TestJugador(unittest.TestCase):
 
     def test_movimientos_legales_obligacion_reingresar(self):
         tablero = Tablero()
-        tablero._Tablero__barra__["NEGRO"] = 2
+        tablero.__barra__["NEGRO"] = 2
         jugador_negro = Jugador("Negro", "NEGRO")
         dados = [3, 4]
         
@@ -197,9 +197,9 @@ class TestJugador(unittest.TestCase):
         # Bloquear todos los puntos de entrada para NEGRO
         # (puntos 0-5 bloqueados con 2+ fichas BLANCAS)
         for i in range(6):
-            tablero._Tablero__puntos__[i] = {"color": "BLANCO", "cantidad": 2}
+            tablero.__puntos__[i] = {"color": "BLANCO", "cantidad": 2}
         
-        tablero._Tablero__barra__["NEGRO"] = 1
+        tablero.__barra__["NEGRO"] = 1
         jugador_negro = Jugador("Negro", "NEGRO")
         dados = [1, 2, 3, 4, 5, 6]  # Todos los dados posibles
         
@@ -227,16 +227,16 @@ class TestJugador(unittest.TestCase):
         origen = 23  # Punto inicial de BLANCO con 2 fichas
         dado = 1
         
-        cantidad_origen_antes = self.tablero._Tablero__puntos__[origen]["cantidad"]
+        cantidad_origen_antes = self.tablero.__puntos__[origen]["cantidad"]
         destino = self.tablero.lugar_destino("BLANCO", origen, dado)
-        cantidad_destino_antes = self.tablero._Tablero__puntos__[destino]["cantidad"]
+        cantidad_destino_antes = self.tablero.__puntos__[destino]["cantidad"]
         
         # Ejecutar movimiento
         self.blanco.mover(self.tablero, origen, dado)
         
         # Verificar cambios
-        cantidad_origen_despues = self.tablero._Tablero__puntos__[origen]["cantidad"]
-        cantidad_destino_despues = self.tablero._Tablero__puntos__[destino]["cantidad"]
+        cantidad_origen_despues = self.tablero.__puntos__[origen]["cantidad"]
+        cantidad_destino_despues = self.tablero.__puntos__[destino]["cantidad"]
         
         self.assertEqual(cantidad_origen_despues, cantidad_origen_antes - 1)
         self.assertEqual(cantidad_destino_despues, cantidad_destino_antes + 1)
