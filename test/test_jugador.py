@@ -72,11 +72,28 @@ class TestJugador(unittest.TestCase):
         self.assertEqual(dir1, dir2)
         self.assertEqual(dir1, -1)
 
+ # ============================================================
+                 # TESTS DE PUEDE_MOVER
+# =============================================================
 
     def test_puede_mover_con_movimientos_disponibles(self):
         dados = [1, 2]
         resultado = self.blanco.puede_mover(self.tablero, dados)
         self.assertTrue(resultado)
+
+    def test_puede_mover_sin_movimientos(self):
+        # Crear un tablero donde BLANCO no pueda mover
+        tablero_bloqueado = Tablero()
+        # Vaciar posiciones de BLANCO
+        for i in range(24):
+            if tablero_bloqueado._Tablero__puntos__[i]["color"] == "BLANCO":
+                tablero_bloqueado._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+        
+        # BLANCO no debería poder mover porque no tiene fichas
+        dados = [1, 2]
+        resultado = self.blanco.puede_mover(tablero_bloqueado, dados)
+        self.assertFalse(resultado)
+
 
     def test_movimientos_legales_funcione(self):
         dados = [1, 2]
