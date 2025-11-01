@@ -1,4 +1,4 @@
-from tablero import Tablero
+from src.tablero import Tablero
 from typing import List, Tuple
 
 ficha1 = "BLANCO"
