@@ -227,3 +227,31 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - **Coordenadas fuera del tablero**: `obtener_punto_desde_posicion()` ya devolvía `-1` correctamente; se validó el uso para evitar accesos fuera de rango en `manejar_click`.
 - **Mensajes temporales**: se asegura que `dibujar_mensaje()` no crashee cuando el mensaje expira (condición protegida por `get_ticks()`).
 - **Hover de botón**: variable local `__color_boton__` utilizada de forma consistente en `menu` y `victoria`.
+
+## [0.29.0] - 2025-10-31 18:08
+### Added
+- Suite de tests para `BackgammonGame` con `unittest`:
+  - Inicialización (jugadores, tablero, estado inicial).
+  - Turnos (primer turno, cambio y limpieza de dados).
+  - Dados (tirar, dobles, usar y agotar).
+  - Movimientos (sin dados, dado inválido, lista de legales).
+  - Victoria y finalización.
+  - Estado expuesto por `obtener_estado_juego()`.
+  - Reinicio de juego (`reiniciar_juego()`).
+  - Integración (flujo básico) y *properties* (readonly).
+### Cambiado
+- Pequeños ajustes de import path para `src/`.
+
+## [0.30.0] - 2025-10-31 19:45
+### Added
+- Tests de `Tablero` (unittest) cubriendo:
+  - Setup inicial (24 puntos y distribución de fichas).
+  - Direcciones y cálculo de destino (blanco/negro).
+  - Movidas válidas/ inválidas (vacío, propio, bloqueado, fuera de rango).
+  - Aplicar movimiento (reduce origen, suma destino, color correcto).
+  - Reingreso desde barra (puntos de entrada y dado inválido).
+  - Conteos globales (15 blancas/15 negras, barra/fuera en 0).
+  - Conservación de fichas tras secuencia.
+  - `iter_puntos()` retorna 24 tuplas con formato ok.
+### Cambiado
+- Import directo desde `src.tablero` para simplificar los tests.
