@@ -118,28 +118,33 @@ class testTablero(unittest.TestCase):
     
     def test_aplicar_movimiento_reduce_cantidad_origen(self):
         tablero = Tablero()
-        cantidad_inicial = tablero._Tablero__puntos__[12]["cantidad"]
+        puntos = tablero.obtener_puntos()
+        cantidad_inicial = puntos[12]["cantidad"]
+        self.assertEqual(puntos[8]["cantidad"], 1)
         
         tablero.aplicar_hay_ficha(ficha1, 12, 4)
-        
+
+        puntos = tablero.obtener_puntos()
         cantidad_final = tablero._Tablero__puntos__[12]["cantidad"]
         self.assertEqual(cantidad_final, cantidad_inicial - 1)
     
     def test_aplicar_movimiento_aumenta_cantidad_destino(self):
         tablero = Tablero()
-        cantidad_inicial = tablero._Tablero__puntos__[8]["cantidad"]
+        puntos = tablero.obtener_puntos() 
+        cantidad_inicial = puntos[8]["cantidad"]
         
-        tablero.aplicar_hay_ficha(ficha1, 12, 4)  # 12 → 8
+        tablero.aplicar_hay_ficha(ficha1, 12, 4)
         
-        cantidad_final = tablero._Tablero__puntos__[8]["cantidad"]
+        puntos = tablero.obtener_puntos()
+        cantidad_final = puntos[8]["cantidad"]
         self.assertEqual(cantidad_final, cantidad_inicial + 1)
     
     def test_aplicar_movimiento_cambia_color_destino(self):
         tablero = Tablero()
         
         tablero.aplicar_hay_ficha(ficha1, 12, 4)  # 12 → 8
-        
-        self.assertEqual(tablero._Tablero__puntos__[8]["color"], ficha1)
+        puntos = tablero.obtener_puntos() 
+        self.assertEqual(puntos[8]["color"], ficha1)
 
     def test_punto_origen_queda_sin_color_si_se_vacia(self):
         tablero = Tablero()
@@ -147,9 +152,10 @@ class testTablero(unittest.TestCase):
         # Punto 0 tiene solo 2 fichas negras
         tablero.aplicar_hay_ficha(ficha2, 0, 3)  # Primera
         tablero.aplicar_hay_ficha(ficha2, 0, 3)  # Segunda
-        
-        self.assertIsNone(tablero._Tablero__puntos__[0]["color"])
-        self.assertEqual(tablero._Tablero__puntos__[0]["cantidad"], 0)
+
+        puntos = tablero.obtener_puntos() 
+        self.assertIsNone(puntos[0]["color"]) 
+        self.assertEqual(puntos[0]["cantidad"], 0)
     
     def test_movimiento_invalido_lanza_error(self):
         tablero = Tablero()
