@@ -327,7 +327,98 @@ class TestJugador(unittest.TestCase):
         
         self.assertEqual(destino_retornado, destino_esperado)
 
-    
+# ============================================================
+                # TESTS DE MOVER - CASOS ADICIONALES
+# ============================================================
+
+    def test_mover_desde_punto_con_ficha_solitaria_rival(self):
+
+        tablero = Tablero()
+        
+        # Colocar una ficha NEGRA solitaria en un punto
+        tablero.__puntos__[22] = {"color": "NEGRO", "cantidad": 1}
+        
+        # Colocar ficha BLANCA en posición para capturar
+        tablero.__puntos__[23] = {"color": "BLANCO", "cantidad": 1}
+        
+        jugador_blanco = Jugador("Blanco", "BLANCO")
+        dado = 1  # Moverá de 23 a 22
+        
+        # Verificar que es un movimiento válido (puede capturar)
+        self.assertTrue(tablero.hay_ficha_o_no("BLANCO", 23, 1))
+        
+        # Aplicar el movimiento
+        destino = jugador_blanco.mover(tablero, 23, dado)
+        
+        # Verificar que el movimiento se aplicó correctamente
+        self.assertEqual(destino, 22)
+        
+        # Verificar que la ficha blanca llegó al destino
+        self.assertEqual(tablero.__puntos__[22]["color"], "BLANCO")
+        self.assertEqual(tablero.__puntos__[22]["cantidad"], 1)
+        
+        # Verificar que el origen quedó vacío
+        self.assertEqual(tablero.__puntos__[23]["cantidad"], 0)
+        
+    def test_movimientos_legales_multiples_fichas_barra(self):
+        tablero = Tablero()
+        tablero.__barra__["NEGRO"] = 3  # Varias fichas en barra
+        
+        jugador_negro = Jugador("Negro", "NEGRO")
+        dados = [2, 5]
+        
+        movs = jugador_negro.movimientos_legales(tablero, dados)
+        
+        # Debe haber movimientos de reingreso
+        self.assertGreater(len(movs), 0)
+        
+        # Todos deben ser desde la barra
+        for origen, destino, dado in movs:
+            self.assertEqual(origen, -1)
+            self.assertIn(dado, dados)
+
+    def test_direccion_afecta_movimientos(self):
+        dados = [2]
+        
+        # Movimientos de BLANCO (dirección -1)
+        movs_blanco = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Movimientos de NEGRO (dirección +1)
+        movs_negro = self.negro.movimientos_legales(self.tablero, dados)
+        
+        # Ambos deben tener movimientos
+        self.assertGreater(len(movs_blanco), 0)
+        self.assertGreater(len(movs_negro), 0)
+        
+        # Verificar que las direcciones son opuestas
+        if movs_blanco and movs_negro:
+            # Para BLANCO, destino < origen (se mueve hacia 0)
+            origen_b, destino_b, _ = movs_blanco[0]
+            if origen_b != -1:  # Si no es desde la barra
+                self.assertLess(destino_b, origen_b, 
+                    "BLANCO debe moverse en dirección decreciente")
+            
+            # Para NEGRO, destino > origen (se mueve hacia 23)
+            origen_n, destino_n, _ = movs_negro[0]
+            if origen_n != -1:  # Si no es desde la barra
+                self.assertGreater(destino_n, origen_n, 
+                    "NEGRO debe moverse en dirección creciente")
+
+    def test_movimientos_con_dados_repetidos_no_dobles(self):
+        dados = [3, 3]  # Simulando que se pasaron dos veces el mismo valor
+        
+        movs = self.blanco.movimientos_legales(self.tablero, dados)
+        
+        # Debe poder usar ambos 3s
+        self.assertGreater(len(movs), 0)
+        
+        # Verificar que se pueden usar múltiples veces
+        dados_usados = [dado for _, _, dado in movs]
+        cuenta_tres = dados_usados.count(3)
+        
+        # Debería haber al menos un movimiento con el dado 3
+        self.assertGreaterEqual(cuenta_tres, 1)
+
 # ============================================================
             # TESTS DE CASOS LÍMITE Y EDGE CASES
 # ============================================================
