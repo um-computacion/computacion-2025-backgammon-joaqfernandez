@@ -1,6 +1,6 @@
-from dados import Dados
-from tablero import Tablero
-from jugador import Jugador
+from src.dados import Dados
+from src.tablero import Tablero
+from src.jugador import Jugador
 
 ficha1 = "BLANCO"
 ficha2 = "NEGRO"

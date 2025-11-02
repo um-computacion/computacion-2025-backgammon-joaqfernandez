@@ -3,10 +3,11 @@ import sys
 import os
 import math
 
-# Agregar el directorio src al path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
-from juego import BackgammonGame
+PROYECTO_RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROYECTO_RAIZ not in sys.path:
+    sys.path.insert(0, PROYECTO_RAIZ)
 
+from src.juego import BackgammonGame
 class PygameUI:
     def __init__(self):
         pygame.init()
