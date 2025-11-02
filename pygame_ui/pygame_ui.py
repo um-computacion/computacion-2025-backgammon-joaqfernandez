@@ -79,6 +79,25 @@ class PygameUI:
         mitad_tablero = self.__tablero_y__ + self.__tablero_alto__ // 2
         alto_area = self.__tablero_alto__ // 2 - 40
 
+        barra_x = self.__tablero_x__ + 6 * self.__ancho_punto__
+        barra_ancho = 2 * self.__ancho_punto__
+        barra_alto = self.__tablero_alto__ // 2
+
+        self.__rect_barra_superior__ = pygame.Rect(
+            barra_x,
+            self.__tablero_y__,
+            barra_ancho,
+            barra_alto
+        )
+
+        self.__rect_barra_inferior__ = pygame.Rect(
+            barra_x,
+            self.__tablero_y__ + barra_alto,
+            barra_ancho,
+            barra_alto
+        )
+
+
         self.__area_fuera_negro__ = pygame.Rect(
             self.__area_fuera_x__,
             self.__tablero_y__ + 20,
@@ -260,9 +279,26 @@ class PygameUI:
     def __dibujar_fichas_barra__(self):
         if not self.__juego__:
             return
-        
+
         barra_x = self.__tablero_x__ + 6 * self.__ancho_punto__ + self.__ancho_punto__
-        
+
+        if hasattr(self, "__rect_barra_inferior__"):
+            if self.__punto_seleccionado__ == "barra_blanco":
+                pygame.draw.rect(
+                    self.__pantalla__,
+                    self.__color_seleccion__,
+                    self.__rect_barra_inferior__,
+                    3,
+                    border_radius=12
+                )
+            if self.__punto_seleccionado__ == "barra_negro":
+                pygame.draw.rect(
+                    self.__pantalla__,
+                    self.__color_seleccion__,
+                    self.__rect_barra_superior__,
+                    3,
+                    border_radius=12
+                )
         # Fichas blancas en la barra
         fichas_blanco = self.__juego__.tablero.fichas_en_barra("BLANCO")
         if fichas_blanco > 0:
@@ -338,6 +374,37 @@ class PygameUI:
                 rect_mas = superficie_mas.get_rect(center=(area_rect.centerx, y_pos + self.__radio_ficha__ + 15))
                 self.__pantalla__.blit(superficie_mas, rect_mas)
 
+    def __dibujar_info_fuera__(self, area_rect: pygame.Rect, titulo: str, cantidad: int, color_ficha: tuple):
+        if not area_rect:
+            return
+
+        titulo_superficie = self.__fuente_texto__.render(titulo, True, self.__color_texto__)
+        titulo_rect = titulo_superficie.get_rect(center=(area_rect.centerx, area_rect.top + 25))
+        self.__pantalla__.blit(titulo_superficie, titulo_rect)
+
+        cantidad_texto = f"Fichas fuera: {cantidad}"
+        cantidad_superficie = self.__fuente_pequeña__.render(cantidad_texto, True, self.__color_texto__)
+        cantidad_rect = cantidad_superficie.get_rect(center=(area_rect.centerx, area_rect.bottom - 25))
+        self.__pantalla__.blit(cantidad_superficie, cantidad_rect)
+
+        fichas_visibles = min(cantidad, 5)
+        if fichas_visibles:
+            espacio = self.__radio_ficha__ * 2 + 6
+            ancho_total = (fichas_visibles - 1) * espacio
+            x_inicio = area_rect.centerx - ancho_total // 2
+            y_pos = (area_rect.top + area_rect.bottom) // 2
+
+            for i in range(fichas_visibles):
+                x = x_inicio + i * espacio
+                pygame.draw.circle(self.__pantalla__, color_ficha, (x, y_pos), self.__radio_ficha__)
+                pygame.draw.circle(self.__pantalla__, self.__color_borde_ficha__, (x, y_pos), self.__radio_ficha__, 2)
+
+            if cantidad > fichas_visibles:
+                texto_mas = f"+{cantidad - fichas_visibles}"
+                superficie_mas = self.__fuente_pequeña__.render(texto_mas, True, self.__color_texto__)
+                rect_mas = superficie_mas.get_rect(center=(area_rect.centerx, y_pos + self.__radio_ficha__ + 15))
+                self.__pantalla__.blit(superficie_mas, rect_mas)
+
 
 
     def dibujar_info_turno(self):
@@ -375,7 +442,7 @@ class PygameUI:
         self.__mensaje__ = mensaje
         self.__tiempo_mensaje__ = pygame.time.get_ticks()
 
-    def obtener_punto_desde_posicion(self, pos: tuple) -> int:
+    def obtener_punto_desde_posicion(self, pos: tuple):        
         x, y = pos
 
         if hasattr(self, "__area_fuera_blanco__"):
@@ -383,6 +450,14 @@ class PygameUI:
                 return self.__destino_fuera_blanco__
             if self.__area_fuera_negro__.collidepoint(pos):
                 return self.__destino_fuera_negro__
+
+        if self.__juego__ and hasattr(self, "__rect_barra_inferior__"):
+            if self.__rect_barra_inferior__.collidepoint(pos):
+                return "barra_blanco"
+            if self.__rect_barra_superior__.collidepoint(pos):
+                return "barra_negro"
+
+
 
         
         # Verificar si está dentro del tablero
@@ -418,6 +493,16 @@ class PygameUI:
         
         punto_clickeado = self.obtener_punto_desde_posicion(pos)
         print(f"Click en punto: {punto_clickeado}")
+
+
+        if isinstance(punto_clickeado, str) and punto_clickeado.startswith("barra"):
+            if self.__punto_seleccionado__ == punto_clickeado:
+                self.__punto_seleccionado__ = None
+                self.__movimientos_posibles__ = []
+                return
+            self.__seleccionar_barra__(punto_clickeado)
+            return
+
         
         if punto_clickeado is None:
             # Click fuera del tablero, deseleccionar
@@ -478,18 +563,48 @@ class PygameUI:
                     self.mostrar_mensaje(f"✗ Error: {e}")
             else:
                 # Cambiar selección a este punto si es del jugador actual
-                color_actual = self.__juego__.turno_actual.color
-                punto = self.__juego__.tablero.obtener_puntos()[punto_clickeado]
-                
-                if punto["color"] == color_actual and punto["cantidad"] > 0:
-                    self.__punto_seleccionado__ = punto_clickeado
-                    todos_movimientos = self.__juego__.obtener_movimientos_legales()
-                    self.__movimientos_posibles__ = [
-                        m for m in todos_movimientos if m[0] == punto_clickeado
-                    ]
+                if isinstance(punto_clickeado, str) and punto_clickeado.startswith("barra"):
+                    self.__seleccionar_barra__(punto_clickeado)
                 else:
-                    self.mostrar_mensaje("Movimiento inválido")
-    
+                    color_actual = self.__juego__.turno_actual.color
+                    punto = self.__juego__.tablero.obtener_puntos()[punto_clickeado]
+
+                    if punto["color"] == color_actual and punto["cantidad"] > 0:
+                        self.__punto_seleccionado__ = punto_clickeado
+                        todos_movimientos = self.__juego__.obtener_movimientos_legales()
+                        self.__movimientos_posibles__ = [
+                            m for m in todos_movimientos if m[0] == punto_clickeado
+                        ]
+                    else:
+                        self.mostrar_mensaje("Movimiento inválido")
+
+    def __seleccionar_barra__(self, identificador: str):
+        if not self.__juego__ or not self.__juego__.turno_actual:
+            return
+
+        color_barra = "BLANCO" if identificador == "barra_blanco" else "NEGRO"
+
+        if self.__juego__.turno_actual.color != color_barra:
+            self.mostrar_mensaje("Es el turno del otro color")
+            return
+
+        if self.__juego__.tablero.fichas_en_barra(color_barra) == 0:
+            self.mostrar_mensaje("No hay fichas en la barra")
+            return
+
+        movimientos = self.__juego__.obtener_movimientos_legales()
+        movimientos_barra = [m for m in movimientos if m[0] == -1]
+
+        if not movimientos_barra:
+            self.mostrar_mensaje("No hay movimientos disponibles desde la barra")
+            return
+
+        self.__punto_seleccionado__ = identificador
+        self.__movimientos_posibles__ = movimientos_barra
+
+        color_texto = "blanca" if color_barra == "BLANCO" else "negra"
+        self.mostrar_mensaje(f"Barra {color_texto} seleccionada")
+
     def dibujar_menu(self):
         self.dibujar_fondo()
         
