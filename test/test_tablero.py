@@ -5,17 +5,17 @@ class testTablero(unittest.TestCase):
     def test_blanco_mueve_a_casilla_vacia(self):
         tablero = Tablero()
        
-        tablero._Tablero__puntos__[22] = {"color": None, "cantidad": 0}
+        tablero.__puntos__[22] = {"color": None, "cantidad": 0}
         self.assertTrue(tablero.hay_ficha_o_no(ficha1, 23, 1))
         tablero.aplicar_hay_ficha(ficha1, 23, 1)
-        self.assertEqual(tablero._Tablero__puntos__[23]["cantidad"], 1)
-        self.assertEqual(tablero._Tablero__puntos__[22]["cantidad"], 1)
-        self.assertEqual(tablero._Tablero__puntos__[22]["color"], ficha1)
+        self.assertEqual(tablero.__puntos__[23]["cantidad"], 1)
+        self.assertEqual(tablero.__puntos__[22]["cantidad"], 1)
+        self.assertEqual(tablero.__puntos__[22]["color"], ficha1)
 
 
     def test_negro_no_puede_mover_a_casilla_bloqueada_por_blanco(self):
         tablero = Tablero()
-        tablero._Tablero__puntos__[6] = {"color": ficha1, "cantidad": 3}
+        tablero.__puntos__[6] = {"color": ficha1, "cantidad": 3}
         self.assertFalse(tablero.hay_ficha_o_no(ficha2, 0, 6))
 
 
@@ -118,6 +118,7 @@ class testTablero(unittest.TestCase):
     
     def test_aplicar_movimiento_reduce_cantidad_origen(self):
         tablero = Tablero()
+        tablero.__puntos__[8] = {"color": ficha1, "cantidad": 1}
         puntos = tablero.obtener_puntos()
         cantidad_inicial = puntos[12]["cantidad"]
         self.assertEqual(puntos[8]["cantidad"], 1)
@@ -125,7 +126,7 @@ class testTablero(unittest.TestCase):
         tablero.aplicar_hay_ficha(ficha1, 12, 4)
 
         puntos = tablero.obtener_puntos()
-        cantidad_final = tablero._Tablero__puntos__[12]["cantidad"]
+        cantidad_final = tablero.__puntos__[12]["cantidad"]
         self.assertEqual(cantidad_final, cantidad_inicial - 1)
     
     def test_aplicar_movimiento_aumenta_cantidad_destino(self):
@@ -259,21 +260,21 @@ class testTablero(unittest.TestCase):
     def test_aplicar_reingreso_a_punto_vacio(self):
         tablero = Tablero()
         # Poner una ficha blanca en la barra
-        tablero._Tablero__barra__["BLANCO"] = 1
+        tablero.__barra__["BLANCO"] = 1
         
         # Aplicar reingreso con dado 2 (entra en punto 22)
         destino = tablero.aplicar_reingreso("BLANCO", 2)
         
         # Verificaciones
         self.assertEqual(destino, 22)
-        self.assertEqual(tablero._Tablero__puntos__[22]["color"], "BLANCO")
-        self.assertEqual(tablero._Tablero__puntos__[22]["cantidad"], 1)
+        self.assertEqual(tablero.__puntos__[22]["color"], "BLANCO")
+        self.assertEqual(tablero.__puntos__[22]["cantidad"], 1)
         self.assertEqual(tablero.fichas_en_barra("BLANCO"), 0)
         
     def test_aplicar_reingreso_a_punto_con_fichas_propias(self):
         tablero = Tablero()
         # Poner una ficha blanca en la barra
-        tablero._Tablero__barra__["BLANCO"] = 1
+        tablero.__barra__["BLANCO"] = 1
         # Punto 23 ya tiene 2 fichas blancas (configuración inicial)
         
         # Aplicar reingreso con dado 1 (entra en punto 23)
@@ -281,24 +282,24 @@ class testTablero(unittest.TestCase):
         
         # Verificaciones
         self.assertEqual(destino, 23)
-        self.assertEqual(tablero._Tablero__puntos__[23]["color"], "BLANCO")
-        self.assertEqual(tablero._Tablero__puntos__[23]["cantidad"], 3)  # 2 + 1
+        self.assertEqual(tablero.__puntos__[23]["color"], "BLANCO")
+        self.assertEqual(tablero.__puntos__[23]["cantidad"], 3)  # 2 + 1
         self.assertEqual(tablero.fichas_en_barra("BLANCO"), 0)
 
     def test_aplicar_reingreso_captura_ficha_rival(self):
         tablero = Tablero()
         # Poner una ficha negra en la barra
-        tablero._Tablero__barra__["NEGRO"] = 1
+        tablero.__barra__["NEGRO"] = 1
         # Colocar UNA ficha blanca en punto 2 (vulnerable)
-        tablero._Tablero__puntos__[2] = {"color": "BLANCO", "cantidad": 1}
+        tablero.__puntos__[2] = {"color": "BLANCO", "cantidad": 1}
         
         # Negro reingresa con dado 3 (1-1=0, pero 3-1=2)
         destino = tablero.aplicar_reingreso("NEGRO", 3)
         
         # Verificaciones
         self.assertEqual(destino, 2)
-        self.assertEqual(tablero._Tablero__puntos__[2]["color"], "NEGRO")
-        self.assertEqual(tablero._Tablero__puntos__[2]["cantidad"], 1)
+        self.assertEqual(tablero.__puntos__[2]["color"], "NEGRO")
+        self.assertEqual(tablero.__puntos__[2]["cantidad"], 1)
         # La ficha blanca capturada debe estar en la barra
         self.assertEqual(tablero.fichas_en_barra("BLANCO"), 1)
         self.assertEqual(tablero.fichas_en_barra("NEGRO"), 0)
@@ -315,7 +316,7 @@ class testTablero(unittest.TestCase):
     def test_aplicar_reingreso_a_punto_bloqueado_lanza_error(self):
         tablero = Tablero()
         # Poner una ficha negra en la barra
-        tablero._Tablero__barra__["NEGRO"] = 1
+        tablero.__barra__["NEGRO"] = 1
         # Punto 5 tiene 5 fichas blancas (bloqueado para negro)
         
         with self.assertRaises(ValueError) as context:
@@ -326,7 +327,7 @@ class testTablero(unittest.TestCase):
     def test_aplicar_reingreso_reduce_fichas_en_barra(self):
         tablero = Tablero()
         # Poner 3 fichas blancas en la barra
-        tablero._Tablero__barra__["BLANCO"] = 3
+        tablero.__barra__["BLANCO"] = 3
         
         # Primera reingreso
         tablero.aplicar_reingreso("BLANCO", 2)
@@ -343,25 +344,25 @@ class testTablero(unittest.TestCase):
     def test_aplicar_reingreso_negro_a_punto_vacio(self):
         tablero = Tablero()
         # Poner una ficha negra en la barra
-        tablero._Tablero__barra__["NEGRO"] = 1
+        tablero.__barra__["NEGRO"] = 1
         # Vaciar punto 2
-        tablero._Tablero__puntos__[2] = {"color": None, "cantidad": 0}
+        tablero.__puntos__[2] = {"color": None, "cantidad": 0}
         
         # Negro reingresa con dado 3 (3-1 = 2)
         destino = tablero.aplicar_reingreso("NEGRO", 3)
         
         # Verificaciones
         self.assertEqual(destino, 2)
-        self.assertEqual(tablero._Tablero__puntos__[2]["color"], "NEGRO")
-        self.assertEqual(tablero._Tablero__puntos__[2]["cantidad"], 1)
+        self.assertEqual(tablero.__puntos__[2]["color"], "NEGRO")
+        self.assertEqual(tablero.__puntos__[2]["cantidad"], 1)
         self.assertEqual(tablero.fichas_en_barra("NEGRO"), 0)
 
     def test_aplicar_reingreso_no_captura_si_punto_tiene_2_rivales(self):
         tablero = Tablero()
         # Poner una ficha blanca en la barra
-        tablero._Tablero__barra__["BLANCO"] = 1
+        tablero.__barra__["BLANCO"] = 1
         # Colocar 2 fichas negras en punto 22 (bloqueado)
-        tablero._Tablero__puntos__[22] = {"color": "NEGRO", "cantidad": 2}
+        tablero.__puntos__[22] = {"color": "NEGRO", "cantidad": 2}
         
         # Intentar reingresar debe fallar
         with self.assertRaises(ValueError):
@@ -370,13 +371,13 @@ class testTablero(unittest.TestCase):
 
     def test_aplicar_reingreso_retorna_destino_correcto(self):
         tablero = Tablero()
-        tablero._Tablero__barra__["BLANCO"] = 1
+        tablero.__barra__["BLANCO"] = 1
         
         destino = tablero.aplicar_reingreso("BLANCO", 5)
         
         # Blanco con dado 5 entra en 24-5 = 19
         self.assertEqual(destino, 19)
-        self.assertEqual(tablero._Tablero__puntos__[19]["color"], "BLANCO")
+        self.assertEqual(tablero.__puntos__[19]["color"], "BLANCO")
 
 
 
