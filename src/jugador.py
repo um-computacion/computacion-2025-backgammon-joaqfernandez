@@ -52,7 +52,12 @@ class Jugador:
             for d in dados:
                 destino = tablero.lugar_destino(self.__color__, origen, d)
                 print(f"    Dado {d}: {origen} → {destino}...", end=" ")  # DEBUG
-                
+                if tablero.es_movimiento_bearing_off(self.__color__, origen, d):
+                    legales.append((origen, tablero.destino_fuera(self.__color__), d))
+                    print(f"✓ BEAR-OFF")  # DEBUG
+                    continue
+
+
                 if tablero.hay_ficha_o_no(self.__color__, origen, d):
                     legales.append((origen, destino, d))
                     print(f"✓ VÁLIDO")  # DEBUG
@@ -66,6 +71,10 @@ class Jugador:
         return len(self.movimientos_legales(tablero, dados)) > 0
     
     def mover(self, tablero, origen: int, dado: int) -> int:
+        if tablero.es_movimiento_bearing_off(self.__color__, origen, dado):
+            tablero.aplicar_hay_ficha(self.__color__, origen, dado)
+            return tablero.destino_fuera(self.__color__)
+
         destino = tablero.lugar_destino(self.__color__, origen, dado)
         tablero.aplicar_hay_ficha(self.__color__, origen, dado)
         return destino
