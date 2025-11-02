@@ -267,3 +267,31 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
   - **Con barra**: obliga reingreso cuando corresponde y filtra entradas bloqueadas.
   - **Mover**: retorna destino correcto y **actualiza tablero** (origen–1, destino+1).
   - **Edge cases**: lista de dados vacía / un solo dado; coherencia `puede_mover` ↔ `movimientos_legales`.
+
+## [0.32.0] - 2025-10-1 16:58
+### Added
+- Tests de `BackgammonGame.realizar_movimiento`:
+  - **Desde barra**: caso exitoso; sin fichas en barra → `ValueError`; reingreso bloqueado → `ValueError`.
+  - **Movimiento regular**: 23→20 con dado 3 actualiza cantidades y consume el dado.
+  - **Consumo de dados**: se verifica que solo se descuente el dado usado.
+
+## [0.33.0] - 2025-10-1 17:59
+### Added
+- Tests de `Tablero.aplicar_reingreso()`:
+  - Reingreso a punto vacío (blanco y negro).
+  - Reingreso sobre punto propio (acumula fichas).
+  - Captura cuando el destino tiene **1** rival.
+  - Errores: sin fichas en barra, destino bloqueado (≥2 rivales).
+  - Reduce correctamente el contador de barra y retorna el **destino** esperado.
+
+## [0.34.0] - 2025-10-1 18:40
+### Added
+- Tests de **movimientos legales** y **mover**:
+  - Excluye destinos **bloqueados** (2+ rivales).
+  - Valida formato y que cada movimiento sea **realmente válido**.
+  - Sin barra: no propone reingresos.
+  - Ignora puntos **vacíos** (no genera movimientos desde allí).
+  - **Captura** cuando hay una sola ficha rival en el destino.
+  - Con **múltiples fichas en barra**: solo reingresos y con dados correctos.
+  - Chequeo de **direcciones**: BLANCO decrece, NEGRO crece.
+  - Manejo de **dados repetidos** (no dobles): se pueden usar varias veces.
