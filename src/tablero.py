@@ -36,14 +36,24 @@ class Tablero:
             return True
         return punto["color"] == color
     
-    def hay_ficha_o_no(self, color: str, origen: int, dado: int)->bool:
+    def hay_ficha_o_no(self, color: str, origen: int, dado: int) -> bool:
         if not (0 <= origen < 24):
-            False
+            return False
+
         punto_de_origen = self.__puntos__[origen]
         if punto_de_origen["color"] != color or punto_de_origen["cantidad"] == 0:
             return False
+
         destino = self.lugar_destino(color, origen, dado)
-        return self.movimiento_regular(color, destino)
+
+        if self.movimiento_regular(color, destino):
+            return True
+
+        if not (0 <= destino < 24):
+            return False
+
+        punto_destino = self.__puntos__[destino]
+        return punto_destino["cantidad"] == 1 and punto_destino["color"] != color
     
     def aplicar_hay_ficha(self, color: str, origen: int, dado: int):
         if not self.hay_ficha_o_no(color, origen, dado):
@@ -53,12 +63,24 @@ class Tablero:
         self.__puntos__[origen]["cantidad"] -= 1
         if self.__puntos__[origen]["cantidad"] == 0:
             self.__puntos__[origen]["color"] = None
+        punto_destino = self.__puntos__[destino]
+        if punto_destino["cantidad"] == 0:
+            punto_destino["color"] = color
+            punto_destino["cantidad"] = 1
+            return destino
 
-        if self.__puntos__[destino]["cantidad"] == 0:
-            self.__puntos__[destino]["color"] = color
-            self.__puntos__[destino]["cantidad"] = 1
-        else:
-            self.__puntos__[destino]["cantidad"] += 1
+        if punto_destino["color"] == color:
+            punto_destino["cantidad"] += 1
+            return destino
+
+        if punto_destino["cantidad"] == 1:
+            rival = ficha1 if color == ficha2 else ficha2
+            self.__barra__[rival] += 1
+            punto_destino["color"] = color
+            punto_destino["cantidad"] = 1
+            return destino
+
+        raise ValueError("Movimiento invalido")
 
     def iter_puntos(self):
         for i, p in enumerate(self.__puntos__):
