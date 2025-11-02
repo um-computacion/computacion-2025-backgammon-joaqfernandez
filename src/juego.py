@@ -7,6 +7,20 @@ ficha2 = "NEGRO"
 
 
 class BackgammonGame:
+    def __setattr__(self, name, value):
+        if name in ("_BackgammonGame__turno_actual__", "__turno_actual__"):
+            super().__setattr__("__turno_actual__", value)
+            super().__setattr__("_BackgammonGame__turno_actual__", value)
+            return
+
+        if name in ("_BackgammonGame__dados_disponibles__", "__dados_disponibles__"):
+            super().__setattr__("__dados_disponibles__", value)
+            super().__setattr__("_BackgammonGame__dados_disponibles__", value)
+            return
+
+        super().__setattr__(name, value)
+
+    
     def __init__(self, nombre_j1: str, nombre_j2: str):
         self.__tablero__ = Tablero()
         self.__jugador1__ = Jugador(nombre_j1, ficha1)
