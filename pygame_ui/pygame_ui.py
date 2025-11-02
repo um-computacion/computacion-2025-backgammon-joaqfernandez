@@ -307,6 +307,37 @@ class PygameUI:
             self.__color_ficha_negra__
         )
 
+    def __dibujar_info_fuera__(self, area_rect: pygame.Rect, titulo: str, cantidad: int, color_ficha: tuple):
+        if not area_rect:
+            return
+
+        titulo_superficie = self.__fuente_texto__.render(titulo, True, self.__color_texto__)
+        titulo_rect = titulo_superficie.get_rect(center=(area_rect.centerx, area_rect.top + 25))
+        self.__pantalla__.blit(titulo_superficie, titulo_rect)
+
+        cantidad_texto = f"Fichas fuera: {cantidad}"
+        cantidad_superficie = self.__fuente_pequeña__.render(cantidad_texto, True, self.__color_texto__)
+        cantidad_rect = cantidad_superficie.get_rect(center=(area_rect.centerx, area_rect.bottom - 25))
+        self.__pantalla__.blit(cantidad_superficie, cantidad_rect)
+
+        fichas_visibles = min(cantidad, 5)
+        if fichas_visibles:
+            espacio = self.__radio_ficha__ * 2 + 6
+            ancho_total = (fichas_visibles - 1) * espacio
+            x_inicio = area_rect.centerx - ancho_total // 2
+            y_pos = (area_rect.top + area_rect.bottom) // 2
+
+            for i in range(fichas_visibles):
+                x = x_inicio + i * espacio
+                pygame.draw.circle(self.__pantalla__, color_ficha, (x, y_pos), self.__radio_ficha__)
+                pygame.draw.circle(self.__pantalla__, self.__color_borde_ficha__, (x, y_pos), self.__radio_ficha__, 2)
+
+            if cantidad > fichas_visibles:
+                texto_mas = f"+{cantidad - fichas_visibles}"
+                superficie_mas = self.__fuente_pequeña__.render(texto_mas, True, self.__color_texto__)
+                rect_mas = superficie_mas.get_rect(center=(area_rect.centerx, y_pos + self.__radio_ficha__ + 15))
+                self.__pantalla__.blit(superficie_mas, rect_mas)
+
 
 
     def dibujar_info_turno(self):
