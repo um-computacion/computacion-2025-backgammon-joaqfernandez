@@ -192,6 +192,25 @@ class TestJugador(unittest.TestCase):
                 self.assertEqual(punto_origen["color"], "BLANCO")
                 self.assertGreater(punto_origen["cantidad"], 0)
 
+    def test_movimientos_legales_incluye_bearing_off_blanco(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[0] = {"color": ficha1, "cantidad": 10}
+        tablero._Tablero__puntos__[1] = {"color": ficha1, "cantidad": 4}
+        tablero._Tablero__puntos__[2] = {"color": ficha1, "cantidad": 1}
+        tablero._Tablero__barra__[ficha1] = 0
+
+        jugador_blanco = Jugador("Blanco", ficha1)
+        dados = [3, 6]
+
+        movimientos = jugador_blanco.movimientos_legales(tablero, dados)
+
+        self.assertIn((2, -1, 3), movimientos)
+
+
     def test_movimientos_legales_sin_obligacion_reingresar(self):
 
         tablero = Tablero()

@@ -3,10 +3,11 @@ import sys
 import os
 import math
 
-# Agregar el directorio src al path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
-from juego import BackgammonGame
+PROYECTO_RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROYECTO_RAIZ not in sys.path:
+    sys.path.insert(0, PROYECTO_RAIZ)
 
+from src.juego import BackgammonGame
 class PygameUI:
     def __init__(self):
         pygame.init()
@@ -28,10 +29,16 @@ class PygameUI:
         self.__color_mensaje_exito__ = (46, 204, 113)
         
         # Dimensiones
-        self.__ancho_ventana__ = 1200
-        self.__alto_ventana__ = 800
-        self.__marge__ = 50
+        self.__ancho_ventana__ = 1400
+        self.__alto_ventana__ = 900
+        self.__marge__ = 40
         self.__radio_ficha__ = 20
+        self.__ancho_area_fuera__ = 220
+        self.__color_area_fuera__ = (87, 66, 52)
+        self.__color_borde_area_fuera__ = (200, 200, 200)
+        self.__destino_fuera_blanco__ = -1
+        self.__destino_fuera_negro__ = 24
+
         
         self.__ancho__ = self.__ancho_ventana__
         self.__alto__ = self.__alto_ventana__
@@ -60,12 +67,31 @@ class PygameUI:
     def __calcular_dimensiones_tablero__(self):
         self.__tablero_x__ = self.__marge__
         self.__tablero_y__ = self.__marge__ + 100
-        self.__tablero_ancho__ = self.__ancho__ - 2 * self.__marge__
+        self.__tablero_ancho__ = self.__ancho__ - 2 * self.__marge__ - self.__ancho_area_fuera__
         self.__tablero_alto__ = self.__alto__ - 2 * self.__marge__ - 150
-        
+
         # Ancho de cada punto (triángulo)
         self.__ancho_punto__ = self.__tablero_ancho__ // 14  # 12 puntos + 2 para la barra
         self.__alto_punto__ = self.__tablero_alto__ // 2 - 20
+
+        self.__area_fuera_x__ = self.__tablero_x__ + self.__tablero_ancho__ + 20
+        area_usable_ancho = self.__ancho_area_fuera__ - 40
+        mitad_tablero = self.__tablero_y__ + self.__tablero_alto__ // 2
+        alto_area = self.__tablero_alto__ // 2 - 40
+
+        self.__area_fuera_negro__ = pygame.Rect(
+            self.__area_fuera_x__,
+            self.__tablero_y__ + 20,
+            area_usable_ancho,
+            alto_area
+        )
+
+        self.__area_fuera_blanco__ = pygame.Rect(
+            self.__area_fuera_x__,
+            mitad_tablero + 20,
+            area_usable_ancho,
+            alto_area
+        )
     
     def dibujar_fondo(self):
         self.__pantalla__.fill(self.__color_fondo__)
@@ -88,18 +114,21 @@ class PygameUI:
         pygame.draw.rect(
             self.__pantalla__,
             self.__color_barra__,
-            (barra_x, self.__tablero_y__, 
+            (barra_x, self.__tablero_y__,
              2 * self.__ancho_punto__, self.__tablero_alto__)
         )
-        
+
+        self.__dibujar_areas_fuera__()
+
         # Dibujar bordes
         pygame.draw.rect(
             self.__pantalla__,
             self.__color_texto__,
-            (self.__tablero_x__, self.__tablero_y__, 
+            (self.__tablero_x__, self.__tablero_y__,
              self.__tablero_ancho__, self.__tablero_alto__),
             3
         )
+
 
     def __dibujar_punto__(self, numero_punto: int):
         # Determinar posición
@@ -154,6 +183,21 @@ class PygameUI:
         texto = self.__fuente_pequeña__.render(str(numero_punto), True, self.__color_texto__)
         texto_rect = texto.get_rect(center=(x + self.__ancho_punto__ // 2, y_base + (10 if fila == 0 else -10)))
         self.__pantalla__.blit(texto, texto_rect)
+
+    def __dibujar_areas_fuera__(self):
+        if not hasattr(self, "__area_fuera_blanco__"):
+            return
+
+        highlight_blanco = any(destino == self.__destino_fuera_blanco__ for _, destino, _ in self.__movimientos_posibles__)
+        highlight_negro = any(destino == self.__destino_fuera_negro__ for _, destino, _ in self.__movimientos_posibles__)
+
+        for rect, resaltar in (
+            (self.__area_fuera_negro__, highlight_negro),
+            (self.__area_fuera_blanco__, highlight_blanco),
+        ):
+            pygame.draw.rect(self.__pantalla__, self.__color_area_fuera__, rect, border_radius=12)
+            color_borde = self.__color_movimiento_posible__ if resaltar else self.__color_borde_area_fuera__
+            pygame.draw.rect(self.__pantalla__, color_borde, rect, 3, border_radius=12)
 
     def dibujar_fichas(self):
         if not self.__juego__:
@@ -246,21 +290,24 @@ class PygameUI:
                 self.__pantalla__.blit(texto, (barra_x - 10, y_base + 30))
 
     def __dibujar_fichas_fuera__(self):
-        if not self.__juego__:
-            return
-        
-        # Área de fichas fuera (derecha del tablero)
-        fuera_x = self.__tablero_x__ + self.__tablero_ancho__ + 20
-        
-        # Fichas blancas fuera
         fichas_blanco = self.__juego__.tablero.fichas_fuera("BLANCO")
-        texto = self.__fuente_pequeña__.render(f"Blanco fuera: {fichas_blanco}", True, self.__color_texto__)
-        self.__pantalla__.blit(texto, (fuera_x, self.__tablero_y__ + self.__tablero_alto__ - 50))
-        
-        # Fichas negras fuera
+    
         fichas_negro = self.__juego__.tablero.fichas_fuera("NEGRO")
-        texto = self.__fuente_pequeña__.render(f"Negro fuera: {fichas_negro}", True, self.__color_texto__)
-        self.__pantalla__.blit(texto, (fuera_x, self.__tablero_y__ + 50))
+        self.__dibujar_info_fuera__(
+            self.__area_fuera_blanco__,
+            "Blanco",
+            fichas_blanco,
+            self.__color_ficha_blanca__
+        )
+
+        self.__dibujar_info_fuera__(
+            self.__area_fuera_negro__,
+            "Negro",
+            fichas_negro,
+            self.__color_ficha_negra__
+        )
+
+
 
     def dibujar_info_turno(self):
         if not self.__juego__ or not self.__juego__.turno_actual:
@@ -299,11 +346,18 @@ class PygameUI:
 
     def obtener_punto_desde_posicion(self, pos: tuple) -> int:
         x, y = pos
+
+        if hasattr(self, "__area_fuera_blanco__"):
+            if self.__area_fuera_blanco__.collidepoint(pos):
+                return self.__destino_fuera_blanco__
+            if self.__area_fuera_negro__.collidepoint(pos):
+                return self.__destino_fuera_negro__
+
         
         # Verificar si está dentro del tablero
         if not (self.__tablero_x__ <= x <= self.__tablero_x__ + self.__tablero_ancho__ and
                 self.__tablero_y__ <= y <= self.__tablero_y__ + self.__tablero_alto__):
-            return -1
+            return None
         
         # Calcular columna
         x_rel = x - self.__tablero_x__
@@ -311,7 +365,7 @@ class PygameUI:
         
         # Ajustar por la barra
         if columna >= 6 and columna < 8:
-            return -1  # Click en la barra
+            return None  # Click en la barra
         if columna >= 8:
             columna -= 2
         
@@ -324,7 +378,7 @@ class PygameUI:
             # Parte inferior (puntos 0-11)
             numero_punto = 11 - columna
         
-        return numero_punto if 0 <= numero_punto < 24 else -1
+        return numero_punto if 0 <= numero_punto < 24 else None
     
     def manejar_click(self, pos: tuple):
 
@@ -334,7 +388,7 @@ class PygameUI:
         punto_clickeado = self.obtener_punto_desde_posicion(pos)
         print(f"Click en punto: {punto_clickeado}")
         
-        if punto_clickeado == -1:
+        if punto_clickeado is None:
             # Click fuera del tablero, deseleccionar
             self.__punto_seleccionado__ = None
             self.__movimientos_posibles__ = []
@@ -342,6 +396,8 @@ class PygameUI:
         
         # Si no hay punto seleccionado, seleccionar este
         if self.__punto_seleccionado__ is None:
+            if not isinstance(punto_clickeado, int) or not (0 <= punto_clickeado < 24):
+                return
             color_actual = self.__juego__.turno_actual.color
             punto = self.__juego__.tablero.obtener_puntos()[punto_clickeado]
             
@@ -473,7 +529,7 @@ class PygameUI:
         mouse_pos = pygame.mouse.get_pos()
         __color_boton__ = self.__color_boton_hover__ if boton_rect.collidepoint(mouse_pos) else self.__color_boton__
         
-        pygame.draw.rect(self.__pantalla__, __color_boton__.boton_rect, border_radius=10)
+        pygame.draw.rect(self.__pantalla__, __color_boton__, boton_rect, border_radius=10)
         pygame.draw.rect(self.__pantalla__, self.__color_texto__, boton_rect, 2, border_radius=10)
         
         texto_boton = self.__fuente_texto__.render("MENÚ", True, self.__color_texto__)

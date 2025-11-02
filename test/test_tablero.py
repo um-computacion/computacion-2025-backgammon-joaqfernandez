@@ -120,7 +120,7 @@ class testTablero(unittest.TestCase):
         tablero = Tablero()
         puntos = tablero.obtener_puntos()
         cantidad_inicial = puntos[12]["cantidad"]
-        self.assertEqual(puntos[8]["cantidad"], 1)
+        self.assertEqual(puntos[8]["cantidad"], 0)
         
         tablero.aplicar_hay_ficha(ficha1, 12, 4)
 
@@ -192,6 +192,90 @@ class testTablero(unittest.TestCase):
     def test_fichas_fuera_inicial_cero_negro(self):
         tablero = Tablero()
         self.assertEqual(tablero.fichas_fuera(ficha2), 0)
+
+    def test_blanco_puede_bearing_off_con_dado_exact(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[0] = {"color": ficha1, "cantidad": 5}
+        tablero._Tablero__puntos__[1] = {"color": ficha1, "cantidad": 5}
+        tablero._Tablero__puntos__[2] = {"color": ficha1, "cantidad": 5}
+        tablero._Tablero__barra__[ficha1] = 0
+
+        self.assertTrue(tablero.hay_ficha_o_no(ficha1, 0, 1))
+        tablero.aplicar_hay_ficha(ficha1, 0, 1)
+        self.assertEqual(tablero.fichas_fuera(ficha1), 1)
+
+    def test_blanco_no_puede_bearing_off_con_dado_mayor_si_hay_fichas_atras(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[2] = {"color": ficha1, "cantidad": 1}
+        tablero._Tablero__puntos__[5] = {"color": ficha1, "cantidad": 14}
+        tablero._Tablero__barra__[ficha1] = 0
+
+        self.assertFalse(tablero.hay_ficha_o_no(ficha1, 2, 6))
+
+    def test_blanco_puede_bearing_off_con_dado_mayor_sin_fichas_atras(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[0] = {"color": ficha1, "cantidad": 10}
+        tablero._Tablero__puntos__[1] = {"color": ficha1, "cantidad": 4}
+        tablero._Tablero__puntos__[2] = {"color": ficha1, "cantidad": 1}
+        tablero._Tablero__barra__[ficha1] = 0
+
+        self.assertTrue(tablero.hay_ficha_o_no(ficha1, 2, 6))
+        tablero.aplicar_hay_ficha(ficha1, 2, 6)
+        self.assertEqual(tablero.fichas_fuera(ficha1), 1)
+
+    def test_negro_puede_bearing_off_con_dado_exact(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[21] = {"color": ficha2, "cantidad": 5}
+        tablero._Tablero__puntos__[22] = {"color": ficha2, "cantidad": 5}
+        tablero._Tablero__puntos__[23] = {"color": ficha2, "cantidad": 5}
+        tablero._Tablero__barra__[ficha2] = 0
+
+        self.assertTrue(tablero.hay_ficha_o_no(ficha2, 23, 1))
+        tablero.aplicar_hay_ficha(ficha2, 23, 1)
+        self.assertEqual(tablero.fichas_fuera(ficha2), 1)
+
+    def test_negro_no_puede_bearing_off_si_hay_fichas_atras(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[21] = {"color": ficha2, "cantidad": 1}
+        tablero._Tablero__puntos__[18] = {"color": ficha2, "cantidad": 14}
+        tablero._Tablero__barra__[ficha2] = 0
+
+        self.assertFalse(tablero.hay_ficha_o_no(ficha2, 21, 6))
+
+    def test_negro_puede_bearing_off_con_dado_mayor_sin_fichas_atras(self):
+        tablero = Tablero()
+
+        for i in range(24):
+            tablero._Tablero__puntos__[i] = {"color": None, "cantidad": 0}
+
+        tablero._Tablero__puntos__[23] = {"color": ficha2, "cantidad": 10}
+        tablero._Tablero__puntos__[22] = {"color": ficha2, "cantidad": 4}
+        tablero._Tablero__puntos__[21] = {"color": ficha2, "cantidad": 1}
+        tablero._Tablero__barra__[ficha2] = 0
+
+        self.assertTrue(tablero.hay_ficha_o_no(ficha2, 21, 6))
+        tablero.aplicar_hay_ficha(ficha2, 21, 6)
+        self.assertEqual(tablero.fichas_fuera(ficha2), 1)
     
     def test_no_hay_obligacion_reingresar_inicial_blanco(self):
         tablero = Tablero()
